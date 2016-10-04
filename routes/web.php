@@ -11,10 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth.basic');
-
-Route::get('/homes', function() {
-    return view('welcome');
-});
+Route::get('/', 'SiteController@home');
+Route::get('/eword', 'EwordController@index');
+Route::get('/eword/intro', 'EwordController@intro');
+Route::get('/eword/quiz', 'EwordController@quiz');
+Route::get('/eword/result', 'EwordController@result');
+Route::get('/eword/summary', 'EwordController@summary');

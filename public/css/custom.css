@@ -1,0 +1,16 @@
+.intro-body {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.timer {
+  text-align: center;
+}
+
+.timer span {
+  color: red;
+}
+
+.col-logo {
+  max-width: 220px;
+}

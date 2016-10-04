@@ -1,0 +1,32 @@
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+main {
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #eee;
+  padding-bottom: 80px;
+  margin-top: 51px;
+  }
+section {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  }
+footer {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 20px;
+  text-align: center;
+}
