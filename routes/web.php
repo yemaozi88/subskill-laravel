@@ -13,7 +13,7 @@
 
 Route::get('/', 'SiteController@home');
 Route::get('/eword', 'EwordController@index');
-Route::get('/eword/intro', 'EwordController@intro');
-Route::get('/eword/quiz', 'EwordController@quiz');
-Route::get('/eword/result', 'EwordController@result');
-Route::get('/eword/summary', 'EwordController@summary');
+Route::post('/eword/intro', 'EwordController@intro');
+Route::post('/eword/quiz', 'EwordController@quiz');
+Route::post('/eword/result', 'EwordController@result');
+Route::post('/eword/summary', 'EwordController@summary');

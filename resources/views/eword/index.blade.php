@@ -67,7 +67,7 @@
         </div>
         <input type="hidden" name="q_set" value="R">
     @endif
-
+    {{ csrf_field() }}
     <input type="hidden" name="with_wav" value="{{ $with_wav ? 1 : 0 }} ?>">
     <input type="hidden" name="is_test" value="{{ $is_test ? 1 : 0 }}">
     <button type="submit" class="btn btn-default">次に進む</button>
