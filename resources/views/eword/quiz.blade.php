@@ -36,8 +36,10 @@
                     </label>
                 </div>
                 @endfor
+                    <input type="radio" name="q_selection" id="q_selection_blank"
+                           value="0" hidden>
             </div>
-
+            {{ csrf_field() }}
             <input type="hidden" name="username" value="{{ $username }}">
             <input type="hidden" name="user_id" value="{{ $user_id }}">
             <input type="hidden" name="q_set" value="{{ $q_set }}">
