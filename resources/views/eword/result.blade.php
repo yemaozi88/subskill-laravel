@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
+@section('scripts')
+    @parent
+    <script src="{{ URL::asset('js/eword/result.js') }}"></script>
+@stop
+
 @section('content')
 
-<script src="{{ URL::asset('js/eword_quiz_result.js') }}"></script>
 @if ($is_redirect)
 <div id="redirect"></div>
 @endif

@@ -14,10 +14,16 @@
 Route::get('/', 'SiteController@home');
 
 // Eword
-Route::get('/eword', 'EwordController@index');
-Route::post('/eword/intro', 'EwordController@intro');
-Route::post('/eword/quiz', 'EwordController@quiz');
-Route::post('/eword/result', 'EwordController@result');
-Route::post('/eword/summary', 'EwordController@summary');
+Route::group(['prefix' => 'eword'], function () {
+    Route::get('/', 'EwordController@index');
+    Route::post('intro', 'EwordController@intro');
+    Route::post('quiz', 'EwordController@quiz');
+    Route::post('result', 'EwordController@result');
+    Route::post('summary', 'EwordController@summary');
+});
+
 
 // Admin
+Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
+    Route::get('/', 'AdminController@index');
+});

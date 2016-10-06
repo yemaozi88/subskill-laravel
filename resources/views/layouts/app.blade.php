@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
 
+    @section('scripts')
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ URL::asset("js/jquery.min.js") }}"></script>
 
@@ -18,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/framework.css") }}">
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/custom.css") }}">
+    @show
 
     <title>
         @yield('title', '速読と速聴のための英単語力クイズ')

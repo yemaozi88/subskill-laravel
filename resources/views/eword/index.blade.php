@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
-@section('content')
+@section('scripts')
+    @parent
+    <script src="{{ URL::asset('js/eword/index.js') }}"></script>
+@stop
 
-<script src="{{ URL::asset('js/eword_index.js') }}"></script>
+@section('content')
 
 <div class="page-header">
     <h1>{{ $with_wav ? "聴いて答える問題" : "見て答える問題" }}

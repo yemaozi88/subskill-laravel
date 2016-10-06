@@ -1,16 +1,20 @@
 .intro-body {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .timer {
-  text-align: center;
+    text-align: center;
 }
 
 .timer span {
-  color: red;
+    color: red;
 }
 
 .col-logo {
-  max-width: 220px;
+    max-width: 220px;
+}
+
+.underline {
+    border-bottom: #005bff solid 2px;
 }

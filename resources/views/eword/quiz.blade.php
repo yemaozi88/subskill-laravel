@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
-@section('content')
+@section('scripts')
+    @parent
+    <script src="{{ URL::asset('js/eword/quiz.js') }}"></script>
+@stop
 
-<script src="{{ URL::asset('js/quiz.js') }}"></script>
+@section('content')
 
 <div class="page-header">
     <h1>第{{ $q_index }}問</h1>
