@@ -8,7 +8,7 @@
     <h3 class="">英単語クイズ</h3>
     <ul>
         <li>
-            <a href="#">成績の閲覧</a>
+            <a href="{{ URL::action('AdminController@eword') }}">成績の閲覧</a>
         </li>
         <li>
             <a href="#">問題管理</a>

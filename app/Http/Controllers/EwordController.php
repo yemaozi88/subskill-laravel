@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use App\Http\Requests;
+use App\Helpers\Helper;
 use App\QuizUser;
 
 use URL;
@@ -20,19 +21,7 @@ class EwordController extends Controller
         $is_test = $request->input('is_test') == 1;
         $college_info = [];
         if ($is_test) {
-            // TODO: replace with real colleage list
-            $college_info = [
-                ["tiu", "logo/tiu.png"],
-                ["aoyama", "logo/aoyama.gif"],
-                ["chuo", "logo/chuo.gif"],
-                ["seijo", "logo/seijo.gif"],
-                ["u-tokyo", "logo/u-tokyo.gif"],
-                #["tottori", "logo/tottori.gif"],
-                ["kansai-u", "logo/kansai-u.gif"],
-                ["zeneiren", "logo/zeneiren.png"],
-                ["tokai", "logo/tokai.png"],
-                ["guest", "guest"],
-            ];
+            $college_info = Helper::get_college_info();
         }
         return view('eword/index', [
             'with_wav' => $with_wav,

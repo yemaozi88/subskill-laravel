@@ -26,4 +26,6 @@ Route::group(['prefix' => 'eword'], function () {
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
     Route::get('/', 'AdminController@index');
+    Route::get('eword', 'AdminController@eword');
+    Route::get('eword_list', 'AdminController@eword_list');
 });
