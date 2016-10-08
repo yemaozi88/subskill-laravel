@@ -18,3 +18,8 @@
 .underline {
     border-bottom: #005bff solid 2px;
 }
+
+.subtitle {
+    border-left: solid 5px #aaaaaa;
+    padding: 10px 10px 7px 13px;
+}

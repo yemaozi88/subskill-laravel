@@ -26,6 +26,9 @@ Route::group(['prefix' => 'eword'], function () {
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
     Route::get('/', 'AdminController@index');
-    Route::get('eword', 'AdminController@eword');
-    Route::get('eword_list', 'AdminController@eword_list');
+    Route::group(['prefix' => 'eword', 'namespace' => 'Admin'], function () {
+        Route::get('/', 'EwordController@index');
+        Route::get('list_by_date', 'EwordController@list_by_date');
+        Route::get('detail', 'EwordController@detail');
+    });
 });

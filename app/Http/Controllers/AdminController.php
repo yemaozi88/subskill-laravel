@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Helpers\Helper;
 
 class AdminController extends Controller
 {
@@ -13,17 +12,5 @@ class AdminController extends Controller
         return view('admin/index');
     }
 
-    public function eword(Request $request) {
-        $college_info = Helper::get_college_info();
-        return view('admin/eword', [
-            'college_info' => $college_info,
-        ]);
-    }
 
-    public function eword_list(Request $request) {
-        $test_type = $request->input('test_type');
-        return view('admin/eword_list', [
-            'test_type' => $test_type,
-        ]);
-    }
 }

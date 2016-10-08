@@ -4,7 +4,7 @@
     <div class="page-header">
         <h1>英単語クイズの統計</h1>
     </div>
-    <form class="" action="{{ URL::action('AdminController@eword_list') }}" method="get">
+    <form class="" action="{{ URL::action('Admin\EwordController@list_by_date') }}" method="get">
         @include('eword._college_select', ['college_info' => $college_info])
         <div class="form-group">
             <label for="test_type">Select Type</label>
