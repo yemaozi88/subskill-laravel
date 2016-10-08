@@ -21,6 +21,9 @@ class AdminController extends Controller
     }
 
     public function eword_list(Request $request) {
-        return view('admin/eword_list');
+        $test_type = $request->input('test_type');
+        return view('admin/eword_list', [
+            'test_type' => $test_type,
+        ]);
     }
 }

@@ -177,21 +177,27 @@ class EwordController extends Controller
         }
         $is_correct = $q_data[5] == $q_selection;
         $is_blank_answer = $q_selection == 0;
-        // TODO: do index check here.
-        EwordResult::create([
-            "session_id" => $session_id,
-            "play_count" => $play_count,
-            "user_answer" => $q_selection,
-            "is_correct" => $is_correct,
-            "quiz_index" => $q_index,
-            "elapsed_time" => $elapsed_time
-        ]);
+        $is_duplicated_post = false;
+        if (EwordResult::where(['session_id' => $session_id, 'quiz_index' => $q_index])->exists()) {
+            // Duplicated post
+            $is_duplicated_post = true;
+        } else {
+            // TODO(sonicmisora): User can still refresh page to get extra time.
+            EwordResult::create([
+                "session_id" => $session_id,
+                "play_count" => $play_count,
+                "user_answer" => $q_selection,
+                "is_correct" => $is_correct,
+                "quiz_index" => $q_index,
+                "elapsed_time" => $elapsed_time
+            ]);
+        }
 
         $is_last = $q_num <= $q_index;
         if ($is_last) {
             DB::table('eword_sessions')->where('id', $session_id)->update(['finished' => true]);
         }
-        $is_redirect = $is_test;
+        $is_redirect = $is_test && !$is_blank_answer && !$is_duplicated_post;
 
         return view('eword/result', [
             "with_wav" => $with_wav,
@@ -208,6 +214,7 @@ class EwordController extends Controller
             "elapsed_time" => $elapsed_time,
             "is_redirect" => $is_redirect,
             "is_blank_answer" => $is_blank_answer,
+            "is_duplicated_post" => $is_duplicated_post,
         ]);
     }
 
