@@ -49,15 +49,23 @@ class EwordController extends Controller
                     ->where('with_wav', $test_type == 'with_wav')
                     ->where('is_test', true);
             })
+            ->with(['session' => function($query) {
+                $query->select('id', 'user_id');
+            }, 'session.user' => function($query) {
+                $query->select('id', 'username');
+            }])
             ->get();
+        $overall_stat = $this->compute_stat($results);
 
         return view('admin/eword/detail', [
             'date' => $date,
+            'results' => $results,
+            'overall_stat' => $overall_stat,
         ]);
     }
 
     // Private functions
-    private function generate_func() {
+    private function compute_stat($results) {
 
     }
 }

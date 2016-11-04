@@ -12,8 +12,13 @@
             </div>
             <div class="panel-body">
                 <h4 class="subtitle">正答率[%]</h4>
-
             </div>
         </div>
     </table>
+
+    <div>
+        @foreach ($results as $result)
+            {{ $result }}<br>
+        @endforeach
+    </div>
 @stop

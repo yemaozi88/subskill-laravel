@@ -1,6 +1,6 @@
 @section('navi_links')
 
-<li><a href="#">ホーム</a></li>
+<li><a href="{{ url('/') }}">ホーム</a></li>
 <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
         聞いて答える

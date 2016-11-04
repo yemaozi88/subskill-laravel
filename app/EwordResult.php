@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class EwordResult extends Model
 {
+    public function session() {
+        return $this->belongsTo('App\EwordSession', 'session_id');
+    }
+
     protected $table = 'eword_results';
     protected $fillable = [
         "session_id",
