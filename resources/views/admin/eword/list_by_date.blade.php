@@ -4,6 +4,7 @@
     <div class="page-header">
         <h1>{{ $test_type == 'with_wav' ? '聴いて答える' : '見て答える' }}--統計</h1>
     </div>
+    @if (count($dates) > 0)
     <table class="table table-hover">
         <tr>
             <th>日付</th>
@@ -25,4 +26,7 @@
             </tr>
         @endforeach
     </table>
+    @else
+    <p>結果なし</p>
+    @endif
 @stop

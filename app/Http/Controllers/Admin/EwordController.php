@@ -26,8 +26,7 @@ class EwordController extends Controller
         $test_type = $request->input('test_type');
         $group_name = $request->input('group_name');
 
-        // TODO(sonicmisora): Add group constraint
-        $dates = EwordSession::by_date($test_type == 'with_wav', true);
+        $dates = EwordSession::by_date($test_type == 'with_wav', true, $group_name);
         return view('admin/eword/list_by_date', [
             'test_type' => $test_type,
             'group_name' => $group_name,
@@ -39,15 +38,19 @@ class EwordController extends Controller
         $test_type = $request->input('test_type');
         $group_name = $request->input('group_name');
         $date = $request->input('date');
-
-        // TODO(sonicmisora): Add group constraint
+        
         $results = EwordResult::select('session_id', 'is_correct', 'elapsed_time', 'quiz_index')
-            ->whereIn('session_id', function ($query) use ($date, $test_type) {
+            ->whereIn('session_id', function ($query) use ($date, $test_type, $group_name) {
                 $query->selectRaw('id')
                     ->from('eword_sessions')
                     ->whereRaw('DATE(created_at) = ?', [$date])
                     ->where('with_wav', $test_type == 'with_wav')
-                    ->where('is_test', true);
+                    ->where('is_test', true)
+                    ->whereIn('user_id', function($query) use ($group_name) {
+                        $query->select('id')
+                            ->from('quiz_users')
+                            ->where('group_name', $group_name);
+                    });
             })
             ->with(['session' => function($query) {
                 $query->select('id', 'user_id');
@@ -61,7 +64,7 @@ class EwordController extends Controller
 
         return view('admin/eword/detail', [
             'date' => $date,
-            'results' => $results,
+            'group_title' => $group_name,
             'overall_stat' => $overall_stat,
         ]);
     }
@@ -100,18 +103,30 @@ class EwordController extends Controller
         // Overal return table
         $ret = [
             'correct_rate' => [],
+            'elapsed_time_mean' => [],
+            'elapsed_time_var' => [],
+            'elapsed_time_stab' => [],
         ];
-        // correct rate
+
         foreach ($acc_stats as $username => $stat) {
-            $cr = $this->compute_stat_single($stat, 'c');
-            $ret['correct_rate'][$username] = ['t' => $cr];
+            // Statistics for is_correct, so the mean of it is correct rate
+            $cr_res = $this->compute_stat_single($stat, 'c');
+            $ret['correct_rate'][$username] = ['t' => $cr_res[0] * 100];
+            // Statistics for elapsed time
+            $et_res = $this->compute_stat_single($stat, 'e');
+            $ret['elapsed_time_mean'][$username] = ['t' => $et_res[0]];
+            $ret['elapsed_time_var'][$username] = ['t' => $et_res[1]];
+            $ret['elapsed_time_stab'][$username] = ['t' => $et_res[2]];
             foreach ($nums_of_level as $level => $num) {
                 $level_stat = array_filter($stat, function($v) use ($qindex2level, $level) {
                     return $level == $qindex2level[$v['i']];
                 });
-                $cr = $this->compute_stat_single($level_stat, 'c');
-                //var_dump($level);
-                $ret['correct_rate'][$username][$level] = $cr;
+                $cr_res = $this->compute_stat_single($level_stat, 'c');
+                $ret['correct_rate'][$username][$level] = $cr_res[0] * 100;
+                $et_res = $this->compute_stat_single($level_stat, 'e');
+                $ret['elapsed_time_mean'][$username][$level] = $et_res[0];
+                $ret['elapsed_time_var'][$username][$level] = $et_res[1];
+                $ret['elapsed_time_stab'][$username][$level] = $et_res[2];
             }
         }
 
@@ -127,6 +142,17 @@ class EwordController extends Controller
         foreach ($stat as $row) {
             $s += $row[$column];
         }
-        return $s / $cnt;
+        $mean = $s / $cnt;
+        $var = 0;
+        foreach ($stat as $row) {
+            $var += ($row[$column] - $mean) * ($row[$column] - $mean);
+        }
+        $var = sqrt($var / $cnt);
+        if ($mean == 0) {
+            $stab = 0;
+        } else {
+            $stab = $var / $mean;
+        }
+        return [$mean, $var, $stab];
     }
 }
