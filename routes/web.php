@@ -22,6 +22,11 @@ Route::group(['prefix' => 'eword'], function () {
     Route::post('summary', 'EwordController@summary');
 });
 
+// Word Mem
+Route::group(['prefix' => 'word_mem'], function () {
+    Route::get('/', 'WordMemController@index');
+    Route::get('quiz', 'WordMemController@quiz');
+});
 
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {

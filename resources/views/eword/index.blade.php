@@ -29,7 +29,7 @@
             <p class="form-control-static">
                 どの問題セットに挑戦しますか？
             </p>
-            <!-- TODO: replace options with real list -->
+            <!-- TODO(sonicmisora): replace options with real list -->
             <select class="form-control" name="q_set" id="q_set">
                 <option value="A">練習A</option>
                 <option value="B">練習B</option>

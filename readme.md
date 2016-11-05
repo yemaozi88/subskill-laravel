@@ -7,3 +7,4 @@ This is a website to test your English sub-skill online.
 - [x] Add export table to xsml in Admin/Eword
 - [] Only show detail for the last session of specified day for each student
 - [] Add lookup detail for each student in Admin/Eword
+- [] Make eword quiz question orders random
