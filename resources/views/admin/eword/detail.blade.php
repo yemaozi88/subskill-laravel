@@ -3,6 +3,16 @@
 @section('content')
     <div class="page-header">
         <h1>{{ $date }}の統計({{ $group_title }})</h1>
+        <a class="btn btn-default" href="{{
+                        URL::action('Admin\EwordController@detail', [
+                            'test_type' => $test_type,
+                            'group_name' => $group_name,
+                            'date' => $date,
+                            'format' => 'csv',
+                       ])
+                    }}">
+            <span class="glyphicon glyphicon-download"></span> ダウンロード
+        </a>
     </div>
 
     <div class="panel panel-default">

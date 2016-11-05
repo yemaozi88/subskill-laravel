@@ -21,7 +21,17 @@
                             'test_type' => $test_type,
                             'group_name' => $group_name,
                             'date' => $date->created_date,
-                       ]) }}">詳細</a>
+                       ]) }}"><span class="glyphicon glyphicon-th-list"></span> 詳細</a>
+                    <a class="btn btn-default" href="{{
+                        URL::action('Admin\EwordController@detail', [
+                            'test_type' => $test_type,
+                            'group_name' => $group_name,
+                            'date' => $date->created_date,
+                            'format' => 'csv',
+                       ])
+                    }}">
+                        <span class="glyphicon glyphicon-download"></span> ダウンロード
+                    </a>
                 </td>
             </tr>
         @endforeach

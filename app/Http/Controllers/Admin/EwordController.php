@@ -38,7 +38,11 @@ class EwordController extends Controller
         $test_type = $request->input('test_type');
         $group_name = $request->input('group_name');
         $date = $request->input('date');
-        
+        $format = $request->input('format');
+        if ($format == "") {
+            $format = "html";
+        }
+
         $results = EwordResult::select('session_id', 'is_correct', 'elapsed_time', 'quiz_index')
             ->whereIn('session_id', function ($query) use ($date, $test_type, $group_name) {
                 $query->selectRaw('id')
@@ -62,14 +66,59 @@ class EwordController extends Controller
         $q_table = array_map('str_getcsv', file(public_path("upload/listening/setR/filelist.csv")));
         $overall_stat = $this->compute_stat($results, $q_table);
 
-        return view('admin/eword/detail', [
-            'date' => $date,
-            'group_title' => $group_name,
-            'overall_stat' => $overall_stat,
-        ]);
+        if ($format == "html") {
+            return view('admin/eword/detail', [
+                'date' => $date,
+                'test_type' => $test_type,
+                'group_name' => $group_name,
+                'group_title' => $group_name,
+                'overall_stat' => $overall_stat,
+            ]);
+        } else if ($format == "csv") {
+            $filename = "$date.csv";
+            $content = $this->stat2csv($overall_stat);
+            return response($content)
+                ->header('Content-Type', 'text/csv')
+                ->header('charset', 'utf-8')
+                ->header('Content-Disposition', "attachment; filename=$filename");
+        } else {
+            return "";
+        }
     }
 
     // Private functions
+    private function stat2csv($overall_stat) {
+        $ret = "";
+        $ret .= "Correct Rate[%]\n";
+        $ret .= $this->gen_stat_table($overall_stat['correct_rate']);
+        $ret .= "Reaction Time[Sec]\n";
+        $ret .= $this->gen_stat_table($overall_stat['elapsed_time_mean']);
+        $ret .= "Variance[Sec]\n";
+        $ret .= $this->gen_stat_table($overall_stat['elapsed_time_var']);
+        $ret .= "Stabability[Sec]\n";
+        $ret .= $this->gen_stat_table($overall_stat['elapsed_time_stab']);
+        return $ret;
+    }
+
+    private function gen_stat_table($stat) {
+        if (count($stat) == 0) {
+            return "";
+        }
+        $ret = "Name";
+        foreach (reset($stat) as $key => $value) {
+            $ret .= "," . ($key == 't' ? 'Overall' : "Level " . $key);
+        }
+        $ret .= "\n";
+        foreach ($stat as $username => $entry) {
+            $ret .= "$username";
+            foreach ($entry as $key => $value) {
+                $ret .= "," . number_format($value, 2);
+            }
+            $ret .= "\n";
+        }
+        return $ret;
+    }
+
     private function compute_stat($results, $q_table) {
         // Number of questions
         //$q_num = count($q_table);
