@@ -19,7 +19,10 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/framework.css") }}">
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/custom.css") }}">
+
     @show
+
+    @stack('scripts')
 
     <title>
         @yield('title', '速読と速聴のための英単語力クイズ')

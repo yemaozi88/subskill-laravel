@@ -1,49 +1,50 @@
 @extends('layouts.app')
 
+@if (false)<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"> @endif
+
 @section('title', '作動記憶クイズ')
 
-@section('scripts')
-    @parent
-@stop
+@push('scripts')
+    <script src="{{ URL::asset("js/vue.js") }}"></script>
+@endpush
 
 @section('content')
 
-    <div class="page-header">
-        <h1>作動記憶クイズ（{{ $is_test ? "実力テスト" : "練習" }}）
-            <small>情報登録</small>
-        </h1>
+    <div id="app">
+        <div class="row" v-if="showIntro">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1>回答方法の説明</h1>
+                </div>
+                <p>
+                    こんにちは{{ $username }}さん。
+                </p>
+                <p>
+                    これは英単語を聴いて、その意味を答えるクイズです。
+                </p>
+                <p>
+                    これはあなたが一度にどれだけの英文を処理できるかを測定するテストです。<br>
+                    「問題を再生」ボタンを押すと、2 文の英文が連続して流れます。<br>
+                    英文は一度しか流れず、聞きなおすことはできません。
+                </p>
+                <p>
+                    再生が終了すると、1.5秒後に解答欄が表示されます。<br>
+                    それぞれの文章の最後の単語、および内容の正誤を答えてください。<br>
+                </p>
+                <p>
+                    問題は全部で<strong>{{ $q_num }}</strong>問です。
+                </p>
+                <button class="btn btn-primary"
+                        v-on:click="introBtnClicked">
+                    始める</button>
+            </div>
+        </div>
+        <div v-if="showQuiz">
+            <quiz-index-header :index="quizIndex"></quiz-index-header>
+            <quiz-player :audio-wav-srcs="audioWavSrcs" only-once></quiz-player>
+        </div>
     </div>
 
-    <form class="" action="{{ URL::action('EwordController@intro') }}" method="get">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <p class="form-control-static">
-                お名前（半角英数字のみ、スペースは含めない）を入力してください。
-            </p>
-            <input type="text" class="form-control" id="username"
-                   name="username" placeholder="Username">
-        </div>
-        @if ($is_test)
-            @include('eword._college_select', ['college_info' => $college_info])
-        @else
-            <input type="hidden" name="group_name" value="practice">
-        @endif
-        <div class="form-group">
-            <label for="q_size">Question Set</label>
-            <p class="form-control-static">
-                何文連続再生しますか？
-            </p>
-            <!-- TODO(sonicmisora): replace options with real list -->
-            <select class="form-control" name="q_size" id="q_size">
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-
-        <input type="hidden" name="is_test" value="{{ $is_test ? 1 : 0 }}">
-        <button type="submit" class="btn btn-default">次に進む</button>
-    </form>
+    <script src="{{ URL::asset("js/word_mem/quiz.js") }}"></script>
 
 @stop

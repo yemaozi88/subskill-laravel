@@ -19,11 +19,17 @@ class WordMemController extends Controller
             'college_info' => $college_info,
         ]);
     }
+
     
     public function quiz(Request $request) {
         $is_test = $request->input('is_test') == 1;
+        $q_size = $request->input('q_size');
+        $username = $request->input('username');
+        $q_num = 0;
         return view('word_mem/quiz', [
             'is_test' => $is_test,
+            'q_num' => $q_num,
+            'username' => $username,
         ]);
     }
 }

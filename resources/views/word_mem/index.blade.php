@@ -2,9 +2,9 @@
 
 @section('title', '作動記憶クイズ')
 
-@section('scripts')
-    @parent
-@stop
+@push('scripts')
+<script src="{{ URL::asset('js/word_mem/index.js') }}"></script>
+@endpush
 
 @section('content')
 
@@ -14,7 +14,7 @@
         </h1>
     </div>
 
-    <form class="" action="{{ URL::action('EwordController@intro') }}" method="get">
+    <form class="" action="{{ URL::action('WordMemController@quiz') }}" method="get">
         <div class="form-group">
             <label for="username">Username</label>
             <p class="form-control-static">
