@@ -1,5 +1,11 @@
 (function () {
 
+    var getUniqueStr = function(myStrong) {
+        var strong = 1000;
+        if (myStrong) strong = myStrong;
+        return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
+    }
+
     Vue.component('quiz-index-header', {
         template: '<div class="page-header">\
         <h1>第{{ index }}問</h1>\
@@ -11,7 +17,7 @@
 
     Vue.component('quiz-player', {
         template: '<div>\
-        <button class="btn btn-default" :disabled="!enabled" v-on:click="playAudio">再生</button>\
+        <button class="btn btn-default" :disabled="!enabled" v-on:click="playAudio">問題を再生</button>\
         <audio preload="auto" v-for="(src, index) in audioWavSrcs" v-on:canplay="onCanPlay"\
             v-on:ended="onEnded" ref="audios">\
             <source :src="src" type="audio/wav" >\
@@ -58,6 +64,7 @@
                     // If this is the last one
                     this.currentPlayingIndex = -1;
                     this.played = true;
+                    this.$emit('play-finished');
                     return;
                 }
                 this.currentPlayingIndex++;
@@ -73,8 +80,59 @@
         }
     });
 
-    Vue.component('wm-answer-sheet', {
-        template: ''
+    Vue.component('wm-question', {
+        template: '\
+        <div>\
+            <h3 class="subtitle">第{{ index }}文</h3>\
+            <div class="form-group form-inline">\
+                <label :id="labelId" class="control-label">(1)文章の内容:</label>\
+                <div class="radio">\
+                    <label>\
+                        <input type="radio" :name="radioName" value="1" v-model="answer1">\
+                        正しい\
+                    </label>\
+                </div>\
+                <div class="radio">\
+                    <label>\
+                        <input type="radio" :name="radioName" value="2" v-model="answer1">\
+                        誤り\
+                    </label>\
+                </div>\
+            </div>\
+            <div class="form-group form-inline">\
+                <label :id="labelId" class="control-label">(2)最後の単語:</label>\
+                {{ wordPrefix }}<input :id="inputId" type="text" class="" v-model="answer2">\
+            </div>\
+        </div>',
+        props: {
+            index: null,
+            wordPrefix: {
+                type: String
+            },
+            idPrefix: {
+                type: String,
+                default: function () {
+                    return getUniqueStr();
+                }
+            }
+        },
+        data: function () {
+            return {
+                answer1: "",
+                answer2: ""
+            }
+        },
+        computed: {
+            labelId: function () {
+                return this.idPrefix + '_label';
+            },
+            inputId: function () {
+                return this.idPrefix + '_input';
+            },
+            radioName: function () {
+                return this.idPrefix + '_radio';
+            }
+        }
     });
 
     var app = new Vue({
@@ -82,7 +140,20 @@
         data: {
             step: 0,
             quizIndex: 1,
-            audioWavSrcs: [ 'http://localhost/upload/wm/set2/1.wav', 'http://localhost/upload/wm/set2/2.wav']
+            audioWavSrcs: [
+                '/upload/wm/set2/1.wav',
+                '/upload/wm/set2/2.wav'
+            ],
+            quizContents: [
+                {
+                    quizIndex: 1,
+                    firstChar: 'y'
+                },
+                {
+                    quizIndex: 2,
+                    firstChar: 'p'
+                }
+            ]
         },
         computed: {
             showIntro: function () {
@@ -90,11 +161,20 @@
             },
             showQuiz: function () {
                 return this.step >= 1;
+            },
+            showQuestion: function () {
+                return this.step >= 2;
             }
         },
         methods: {
             introBtnClicked: function () {
                 this.step = 1;
+            },
+            audioPlayFinished: function () {
+                this.step = 2;
+            },
+            submit: function () {
+                alert('Not Implemented');
             }
         }
     });

@@ -41,7 +41,11 @@
         </div>
         <div v-if="showQuiz">
             <quiz-index-header :index="quizIndex"></quiz-index-header>
-            <quiz-player :audio-wav-srcs="audioWavSrcs" only-once></quiz-player>
+            <quiz-player :audio-wav-srcs="audioWavSrcs" only-once v-on:play-finished="audioPlayFinished"></quiz-player>
+            <div v-if="showQuestion">
+                <wm-question v-for="(q, index) in quizContents" :index="index + 1" :word-prefix="q.firstChar"></wm-question>
+                <button class="btn btn-primary" v-on:click="submit">回答を送信</button>
+            </div>
         </div>
     </div>
 
