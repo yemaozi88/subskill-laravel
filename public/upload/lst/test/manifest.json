@@ -1,0 +1,20 @@
+{
+    "questionSets": [
+        {
+            "wavs": ["2_2.wav"],
+            "questionNum": 2,
+            "answers": [
+                {
+                    "correctness": false,
+                    "lastWord": "strings",
+                    "text": "A trumpet is a musical instrument that has strings."
+                },
+                {
+                    "correctness": true,
+                    "lastWord": "trouble",
+                    "text": "A policeman is a person who helps people in trouble."
+                }
+            ]
+        }
+    ]
+}

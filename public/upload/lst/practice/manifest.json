@@ -1,0 +1,41 @@
+{
+    "questionSets": [
+        {
+            "wavs": ["2_1.wav"],
+            "questionNum": 2,
+            "answers": [
+                {
+                    "correctness": true,
+                    "lastWord": "year",
+                    "text": "June is the sixth month of the year."
+                },
+                {
+                    "correctness": false,
+                    "lastWord": "cook",
+                    "text": "Mathematics is a subject that teaches us how to cook."
+                }
+            ]
+        },
+        {
+            "wavs": ["3_1.wav"],
+            "questionNum": 3,
+            "answers": [
+                {
+                    "correctness": false,
+                    "lastWord": "year",
+                    "text": "Wednesday comes before Thursday in a week."
+                },
+                {
+                    "correctness": true,
+                    "lastWord": "cook",
+                    "text": "In Japan, graduation ceremony is usually held in March."
+                },
+                {
+                    "correctness": true,
+                    "lastWord": "cook",
+                    "text": "Christian people celebrate Christmas in December."
+                }
+            ]
+        }
+    ]
+}

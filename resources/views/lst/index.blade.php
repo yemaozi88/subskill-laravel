@@ -28,19 +28,6 @@
         @else
             <input type="hidden" name="group_name" value="practice">
         @endif
-        <div class="form-group">
-            <label for="q_size">Question Set</label>
-            <p class="form-control-static">
-                何文連続再生しますか？
-            </p>
-            <!-- TODO(sonicmisora): replace options with real list -->
-            <select class="form-control" name="q_size" id="q_size">
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
 
         <input type="hidden" name="is_test" value="{{ $is_test ? 1 : 0 }}">
         <button type="submit" class="btn btn-default">次に進む</button>

@@ -23,7 +23,6 @@ class LstController extends Controller
     
     public function quiz(Request $request) {
         $is_test = $request->input('is_test') == 1;
-        $q_size = $request->input('q_size');
         $username = $request->input('username');
         $q_num = 0;
         return view('lst/quiz', [
