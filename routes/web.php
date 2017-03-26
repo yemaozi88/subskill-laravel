@@ -23,9 +23,9 @@ Route::group(['prefix' => 'eword'], function () {
 });
 
 // Word Mem
-Route::group(['prefix' => 'word_mem'], function () {
-    Route::get('/', 'WordMemController@index');
-    Route::get('quiz', 'WordMemController@quiz');
+Route::group(['prefix' => 'lst'], function () {
+    Route::get('/', 'LstController@index');
+    Route::get('quiz', 'LstController@quiz');
 });
 
 // Admin

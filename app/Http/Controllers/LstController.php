@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Helper;
 
-class WordMemController extends Controller
+class LstController extends Controller
 {
     public function index(Request $request) {
         $is_test = $request->input('is_test') == 1;
@@ -14,7 +14,7 @@ class WordMemController extends Controller
         if ($is_test) {
             $college_info = Helper::get_college_info();
         }
-        return view('word_mem/index', [
+        return view('lst/index', [
             'is_test' => $is_test,
             'college_info' => $college_info,
         ]);
@@ -26,7 +26,7 @@ class WordMemController extends Controller
         $q_size = $request->input('q_size');
         $username = $request->input('username');
         $q_num = 0;
-        return view('word_mem/quiz', [
+        return view('lst/quiz', [
             'is_test' => $is_test,
             'q_num' => $q_num,
             'username' => $username,

@@ -3,7 +3,7 @@
 @section('title', '作動記憶クイズ')
 
 @push('scripts')
-<script src="{{ URL::asset('js/word_mem/index.js') }}"></script>
+<script src="{{ URL::asset('lst') }}"></script>
 @endpush
 
 @section('content')
@@ -14,7 +14,7 @@
         </h1>
     </div>
 
-    <form class="" action="{{ URL::action('WordMemController@quiz') }}" method="get">
+    <form class="" action="{{ URL::action('LstController@quiz') }}" method="get">
         <div class="form-group">
             <label for="username">Username</label>
             <p class="form-control-static">

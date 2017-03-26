@@ -49,6 +49,6 @@
         </div>
     </div>
 
-    <script src="{{ URL::asset("js/word_mem/quiz.js") }}"></script>
+    <script src="{{ URL::asset("js/lst/quiz.js") }}"></script>
 
 @stop
