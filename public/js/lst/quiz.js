@@ -76,6 +76,11 @@
                     return;
                 }
                 this.$refs.audios[0].play();
+            },
+            reset: function () {
+                this.audioLoadedNum = 0;
+                this.currentPlayingIndex = -1;
+                this.played = false;
             }
         }
     });
@@ -139,21 +144,32 @@
         el: '#app',
         data: {
             isDataLoaded: false,
+            audioFolderUrl: "",
+            rawData: null,
             step: 0,
-            quizIndex: 1,
-            audioWavSrcs: [
-                '/upload/wm/set2/1.wav',
-                '/upload/wm/set2/2.wav'
-            ],
+            setIndex: 0, // Used for recording how many sets are done in current session
+            audioWavSrcs: [],
             quizContents: [
                 {
                     quizIndex: 1,
                     firstChar: 'y'
-                },
-                {
-                    quizIndex: 2,
-                    firstChar: 'p'
                 }
+            ],
+            answers: [
+                [
+                    {
+                        judgement: true,
+                        isJudgementCorrect: true,
+                        lastWord: "year",
+                        isLastWordCorrect: true
+                    },
+                    {
+                        judgement: true,
+                        isJudgementCorrect: true,
+                        lastWord: "cook",
+                        isLastWordCorrect: false
+                    }
+                ]
             ]
         },
         computed: {
@@ -161,10 +177,24 @@
                 return this.step == 0;
             },
             showQuiz: function () {
-                return this.step >= 1;
+                return this.step == 1 || this.step == 2;
             },
             showQuestion: function () {
-                return this.step >= 2;
+                return this.step == 2;
+            },
+            showFinishedMessage: function () {
+                return this.step == 3;
+            },
+            allWavs: function () {
+                var ret = [];
+                for (var questionSet of this.rawData.questionSets) {
+                    var newWavs = [];
+                    for (var wav of questionSet.wavs) {
+                        newWavs.push(audioFolderUrl + "/" + wav);
+                    }
+                    ret.push(newWavs);
+                }
+                return ret;
             }
         },
         methods: {
@@ -174,23 +204,40 @@
             audioPlayFinished: function () {
                 this.step = 2;
             },
-            dataLoaded: function (data, audioFolderUrl) {
-                this.$data.isDataLoaded = true;
-                //alert(data);
-                var questionSet = data.questionSets[0];
+            loadSet: function (questionSet) {
                 var newWavs = [];
                 for (var wav of questionSet.wavs) {
                     newWavs.push(audioFolderUrl + "/" + wav);
                 }
-                this.$data.audioWavSrcs = newWavs;
+                this.audioWavSrcs = newWavs;
                 var newQuizContents = [];
                 for (var ans of questionSet.answers) {
                     newQuizContents.push({quizIndex: 1, firstChar: ans.lastWord[0]});
                 }
-                this.$data.quizContents = newQuizContents;
+                this.quizContents = newQuizContents;
+            },
+            dataLoaded: function (data, audioFolderUrl) {
+                this.isDataLoaded = true;
+                this.answers = [];
+                this.rawData = data;
+                this.setIndex = 0;
+                this.audioFolderUrl = audioFolderUrl;
+                //alert(data);
+                var questionSet = data.questionSets[this.setIndex];
+                this.loadSet(questionSet);
             },
             submit: function () {
-                alert('Not Implemented');
+                // TODO(sonicmisora): record and send answers
+                this.answers.push(null);
+                if (this.setIndex >= this.rawData.questionSets.length - 1) {
+                    // If we have finished all the tests
+                    this.step = 3;
+                    return;
+                }
+                this.setIndex++;
+                this.step = 1;
+                //this.$refs.quizPlayer.reset();
+                this.loadSet(this.rawData.questionSets[this.setIndex]);
             }
         }
     });

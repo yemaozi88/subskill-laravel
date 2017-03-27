@@ -25,7 +25,7 @@
                 </p>
                 <p>
                     これはあなたが一度にどれだけの英文を処理できるかを測定するテストです。<br>
-                    「問題を再生」ボタンを押すと、2 文の英文が連続して流れます。<br>
+                    「問題を再生」ボタンを押すと、数文の英文が連続して流れます。<br>
                     英文は一度しか流れず、聞きなおすことはできません。
                 </p>
                 <p>
@@ -41,11 +41,20 @@
                     始める</button>
             </div>
         </div>
+        <div v-if="showFinishedMessage">
+            全ての問題に回答しました。<br>
+            <a href="{{ url('/') }}" class="btn btn-default">ホームページに戻る</a>
+        </div>
         <div v-if="showQuiz">
-            <quiz-index-header :index="quizIndex"></quiz-index-header>
-            <quiz-player :audio-wav-srcs="audioWavSrcs" only-once v-on:play-finished="audioPlayFinished"></quiz-player>
+            <quiz-index-header :index="setIndex + 1"></quiz-index-header>
+            <quiz-player v-for="(wavs, index) in allWavs"
+                         :audio-wav-srcs="wavs"
+                         only-once
+                         v-if="index == setIndex"
+                         v-on:play-finished="audioPlayFinished"></quiz-player>
             <div v-if="showQuestion">
-                <wm-question v-for="(q, index) in quizContents" :index="index + 1" :word-prefix="q.firstChar"></wm-question>
+                <wm-question v-for="(q, index) in quizContents" :index="index + 1" :word-prefix="q.firstChar">
+                </wm-question>
                 <button class="btn btn-primary" v-on:click="submit">回答を送信</button>
             </div>
         </div>

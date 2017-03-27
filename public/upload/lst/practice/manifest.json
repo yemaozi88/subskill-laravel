@@ -22,17 +22,17 @@
             "answers": [
                 {
                     "correctness": false,
-                    "lastWord": "year",
+                    "lastWord": "week",
                     "text": "Wednesday comes before Thursday in a week."
                 },
                 {
                     "correctness": true,
-                    "lastWord": "cook",
+                    "lastWord": "March",
                     "text": "In Japan, graduation ceremony is usually held in March."
                 },
                 {
                     "correctness": true,
-                    "lastWord": "cook",
+                    "lastWord": "December",
                     "text": "Christian people celebrate Christmas in December."
                 }
             ]
