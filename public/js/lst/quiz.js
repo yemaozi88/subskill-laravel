@@ -4,7 +4,7 @@
         var strong = 1000;
         if (myStrong) strong = myStrong;
         return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
-    }
+    };
 
     Vue.component('quiz-index-header', {
         template: '<div class="page-header">\
@@ -138,6 +138,7 @@
     var app = new Vue({
         el: '#app',
         data: {
+            isDataLoaded: false,
             step: 0,
             quizIndex: 1,
             audioWavSrcs: [
@@ -173,11 +174,45 @@
             audioPlayFinished: function () {
                 this.step = 2;
             },
+            dataLoaded: function (data, audioFolderUrl) {
+                this.$data.isDataLoaded = true;
+                //alert(data);
+                var questionSet = data.questionSets[0];
+                var newWavs = [];
+                for (var wav of questionSet.wavs) {
+                    newWavs.push(audioFolderUrl + "/" + wav);
+                }
+                this.$data.audioWavSrcs = newWavs;
+                var newQuizContents = [];
+                for (var ans of questionSet.answers) {
+                    newQuizContents.push({quizIndex: 1, firstChar: ans.lastWord[0]});
+                }
+                this.$data.quizContents = newQuizContents;
+            },
             submit: function () {
                 alert('Not Implemented');
             }
         }
     });
+
+    var configElement = $('#config');
+    var manifestUrl = configElement.data('manifest-url');
+    var audioFolderUrl = configElement.data('audio-folder-url');
+
+    function dataFetchFail(error) {
+        //alert("Failed fetching score data:" + error.toString());
+        throw error;
+    }
+
+    function dataFetchDone(dataCollection) {
+        var data = dataCollection[0];
+        app.dataLoaded(data, audioFolderUrl);
+    }
+
+    Promise.all([
+        $.ajax({url: manifestUrl, dataType: 'json'})
+    ]).then(dataFetchDone)
+        .catch(dataFetchFail);
 
 }());
 

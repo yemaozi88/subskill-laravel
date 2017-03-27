@@ -10,6 +10,7 @@
 
 @section('content')
 
+    <div id="config" data-manifest-url="{{ $manifest_url }}" data-audio-folder-url="{{ $audio_folder_url }}"></div>
     <div id="app">
         <div class="row" v-if="showIntro">
             <div class="col-md-12">
@@ -35,7 +36,8 @@
                     問題は全部で<strong>{{ $q_num }}</strong>問です。
                 </p>
                 <button class="btn btn-primary"
-                        v-on:click="introBtnClicked">
+                        v-on:click="introBtnClicked"
+                        :disabled="!isDataLoaded">
                     始める</button>
             </div>
         </div>
