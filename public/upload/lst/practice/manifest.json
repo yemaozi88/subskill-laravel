@@ -21,7 +21,7 @@
             "questionNum": 3,
             "answers": [
                 {
-                    "correctness": false,
+                    "correctness": true,
                     "lastWord": "week",
                     "text": "Wednesday comes before Thursday in a week."
                 },

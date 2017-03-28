@@ -53,7 +53,7 @@
                          v-if="index == setIndex"
                          v-on:play-finished="audioPlayFinished"></quiz-player>
             <div v-if="showQuestion">
-                <wm-question v-for="(q, index) in quizContents" :index="index + 1" :word-prefix="q.firstChar">
+                <wm-question v-for="(q, index) in quizContents" :index="index + 1" :word-prefix="q.firstChar" ref="questions">
                 </wm-question>
                 <button class="btn btn-primary" v-on:click="submit">回答を送信</button>
             </div>

@@ -227,8 +227,22 @@
                 this.loadSet(questionSet);
             },
             submit: function () {
-                // TODO(sonicmisora): record and send answers
-                this.answers.push(null);
+                var ansList = [];
+                var count = 0;
+                for (var wmq of this.$refs.questions) {
+                    var judg = wmq.answer1 == 1;
+                    var lastWord = wmq.wordPrefix + wmq.answer2;
+                    var correctAns = this.rawData.questionSets[this.setIndex].answers[count];
+                    var t_ans = {
+                        judgement: judg,
+                        isJudgementCorrect: correctAns.correctness == judg,
+                        lastWord: lastWord,
+                        isLastWordCorrect: correctAns.lastWord == lastWord
+                    };
+                    ansList.push(t_ans);
+                    count++;
+                }
+                this.answers.push(ansList);
                 if (this.setIndex >= this.rawData.questionSets.length - 1) {
                     // If we have finished all the tests
                     this.step = 3;

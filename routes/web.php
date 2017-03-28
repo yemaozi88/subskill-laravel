@@ -22,7 +22,7 @@ Route::group(['prefix' => 'eword'], function () {
     Route::post('summary', 'EwordController@summary');
 });
 
-// Word Mem
+// Listening spanning test
 Route::group(['prefix' => 'lst'], function () {
     Route::get('/', 'LstController@index');
     Route::get('quiz', 'LstController@quiz');
