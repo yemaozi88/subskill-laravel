@@ -145,6 +145,8 @@
     var audioFolderUrl = configElement.data('audio-folder-url');
     var sendAnswerUrl = configElement.data('send-answer-url');
     var username = configElement.data('username');
+    var groupName = configElement.data('group-name');
+    var quizSetName = configElement.data('quiz-set-name');
 
     var validateAnswer = function () {
         for (var wmq of this.$refs.questions) {
@@ -187,7 +189,8 @@
             correct_num: 0,
             question_num: 0,
             username: username,
-            quiz_set_name: 'test',
+            group_name: groupName,
+            quiz_set_name: quizSetName,
             last_word_list: '',
             judgement_list: ''
         };

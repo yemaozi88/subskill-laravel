@@ -11,7 +11,8 @@
 @section('content')
 
     <div id="config" data-manifest-url="{{ $manifest_url }}" data-audio-folder-url="{{ $audio_folder_url }}"
-         data-send-answer-url="{{ $send_answer_url }}" data-username="{{ $username }}"></div>
+         data-send-answer-url="{{ $send_answer_url }}" data-username="{{ $username }}"
+         data-group-name="{{ $group_name }}" data-quiz-set-name="{{ $quiz_set_name }}"></div>
     <div id="app">
         <div class="row" v-if="showIntro">
             <div class="col-md-12">
