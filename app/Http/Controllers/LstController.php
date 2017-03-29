@@ -28,6 +28,7 @@ class LstController extends Controller
         $q_set = $this->parse_manifest(public_path('upload/lst/practice/manifest.json'));
         $manifest_url = url('upload/lst/practice/manifest.json');
         $audio_folder_url = url('upload/lst/practice');
+        $send_answer_url = url('api/lst/create');
 
         $q_num = count($q_set);
         //var_dump($q_set);
@@ -37,11 +38,16 @@ class LstController extends Controller
             'username' => $username,
             'manifest_url' => $manifest_url,
             'audio_folder_url' => $audio_folder_url,
+            'send_answer_url' => $send_answer_url,
         ]);
     }
 
     private function parse_manifest($filepath) {
         $ret = json_decode(file_get_contents($filepath));
         return $ret->questionSets;
+    }
+
+    public function create(Request $request) {
+        var_dump($request->input());
     }
 }

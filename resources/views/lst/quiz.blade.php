@@ -10,7 +10,8 @@
 
 @section('content')
 
-    <div id="config" data-manifest-url="{{ $manifest_url }}" data-audio-folder-url="{{ $audio_folder_url }}"></div>
+    <div id="config" data-manifest-url="{{ $manifest_url }}" data-audio-folder-url="{{ $audio_folder_url }}"
+         data-send-answer-url="{{ $send_answer_url }}" data-username="{{ $username }}"></div>
     <div id="app">
         <div class="row" v-if="showIntro">
             <div class="col-md-12">
@@ -41,9 +42,17 @@
                     始める</button>
             </div>
         </div>
-        <div v-if="showFinishedMessage">
-            全ての問題に回答しました。<br>
-            <a href="{{ url('/') }}" class="btn btn-default">ホームページに戻る</a>
+        <div class="row" v-if="showFinishedMessage">
+            <div class="col-md-12">
+                <p>全ての回答を送信しました。</p>
+                <a href="{{ url('/') }}" class="btn btn-default">ホームページに戻る</a>
+            </div>
+        </div>
+        <div class="row" v-if="showWaiting">
+            <div class="col-md-12">
+                <p>データ送信中...</p>
+                <div class="loader"></div>
+            </div>
         </div>
         <div v-if="showQuiz">
             <quiz-index-header :index="setIndex + 1"></quiz-index-header>

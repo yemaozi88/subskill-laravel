@@ -140,12 +140,85 @@
         }
     });
 
+    var configElement = $('#config');
+    var manifestUrl = configElement.data('manifest-url');
+    var audioFolderUrl = configElement.data('audio-folder-url');
+    var sendAnswerUrl = configElement.data('send-answer-url');
+    var username = configElement.data('username');
+
+    var validateAnswer = function () {
+        for (var wmq of this.$refs.questions) {
+            if (wmq.answer1 != 1 && wmq.answer1 != 2) {
+                return false;
+            }
+            for (var char of wmq.answer2) {
+                var charCode = char.charCodeAt(0);
+                if (!(charCode >= 'a'.charCodeAt(0) && charCode <= 'z'.charCodeAt(0) ||
+                    charCode >= 'A'.charCodeAt(0) && charCode <= 'Z'.charCodeAt(0) ||
+                    char === '-')) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+
+    var collectAnswer = function () {
+        var ansList = [];
+        var count = 0;
+        for (var wmq of this.$refs.questions) {
+            var judg = wmq.answer1 == 1;
+            var lastWord = wmq.wordPrefix + wmq.answer2;
+            var correctAns = this.rawData.questionSets[this.setIndex].answers[count];
+            var t_ans = {
+                judgement: judg,
+                isJudgementCorrect: correctAns.correctness == judg,
+                lastWord: lastWord,
+                isLastWordCorrect: correctAns.lastWord == lastWord
+            };
+            ansList.push(t_ans);
+            count++;
+        }
+        return ansList;
+    };
+
+    var sendAnswer = function () {
+        var sentData = {
+            correct_num: 0,
+            question_num: 0,
+            username: username,
+            quiz_set_name: 'test',
+            last_word_list: '',
+            judgement_list: ''
+        };
+        for (var set_answers of this.answers) {
+            for (var content of set_answers) {
+                sentData.question_num++;
+                if (content.isJudgementCorrect && content.isLastWordCorrect) {
+                    sentData.correct_num++;
+                }
+                sentData.last_word_list += "#" + content.lastWord;
+                sentData.judgement_list += "#" + (content.judgement ? 'T' : 'F');
+            }
+        }
+        var jqxhr = $.ajax({url: sendAnswerUrl, data: sentData, method: "POST"});
+        jqxhr.done((response)=>{
+            this.waiting = false;
+            this.step = 3;
+        }).fail((error)=>{
+            alert("Some error happened:" + error.toString());
+            this.waiting = false;
+            this.step = 3;
+        });
+    };
+
     var app = new Vue({
         el: '#app',
         data: {
             isDataLoaded: false,
             audioFolderUrl: "",
             rawData: null,
+            waiting: false,
             step: 0,
             setIndex: 0, // Used for recording how many sets are done in current session
             audioWavSrcs: [],
@@ -174,16 +247,19 @@
         },
         computed: {
             showIntro: function () {
-                return this.step == 0;
+                return this.step == 0 && !this.waiting;
             },
             showQuiz: function () {
-                return this.step == 1 || this.step == 2;
+                return (this.step == 1 || this.step == 2) && !this.waiting;
             },
             showQuestion: function () {
-                return this.step == 2;
+                return (this.step == 2) && !this.waiting;
             },
             showFinishedMessage: function () {
-                return this.step == 3;
+                return (this.step == 3) && !this.waiting;
+            },
+            showWaiting: function () {
+                return this.waiting;
             },
             allWavs: function () {
                 var ret = [];
@@ -227,25 +303,16 @@
                 this.loadSet(questionSet);
             },
             submit: function () {
-                var ansList = [];
-                var count = 0;
-                for (var wmq of this.$refs.questions) {
-                    var judg = wmq.answer1 == 1;
-                    var lastWord = wmq.wordPrefix + wmq.answer2;
-                    var correctAns = this.rawData.questionSets[this.setIndex].answers[count];
-                    var t_ans = {
-                        judgement: judg,
-                        isJudgementCorrect: correctAns.correctness == judg,
-                        lastWord: lastWord,
-                        isLastWordCorrect: correctAns.lastWord == lastWord
-                    };
-                    ansList.push(t_ans);
-                    count++;
+                if (!validateAnswer.call(this)) {
+                    alert("文の正誤を選択してください。\n単語に英文字以外の文字は入れないでくさい。");
+                    return;
                 }
+                var ansList = collectAnswer.call(this);
                 this.answers.push(ansList);
                 if (this.setIndex >= this.rawData.questionSets.length - 1) {
                     // If we have finished all the tests
-                    this.step = 3;
+                    this.waiting = true;
+                    sendAnswer.call(this);
                     return;
                 }
                 this.setIndex++;
@@ -255,10 +322,6 @@
             }
         }
     });
-
-    var configElement = $('#config');
-    var manifestUrl = configElement.data('manifest-url');
-    var audioFolderUrl = configElement.data('audio-folder-url');
 
     function dataFetchFail(error) {
         //alert("Failed fetching score data:" + error.toString());

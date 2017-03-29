@@ -13,6 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return view('home');
-});
+Route::post('/lst/create', 'LstController@create');
+
