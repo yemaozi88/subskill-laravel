@@ -27,7 +27,6 @@ class LstController extends Controller
         $is_test = $request->input('is_test') == 1;
         $username = $request->input('username');
         $group_name = $request->input('group_name');
-        // TODO(sonicmisora): add test manifest here
         $quiz_set_name = $request->input('is_test') == 1 ? 'test' : 'practice';
         $show_answer = !$is_test;
         $q_set = $this->parse_manifest(public_path('upload/lst/'.$quiz_set_name.'/manifest.json'));
