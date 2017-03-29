@@ -29,6 +29,7 @@ class LstController extends Controller
         $group_name = $request->input('group_name');
         // TODO(sonicmisora): add test manifest here
         $quiz_set_name = $request->input('is_test') == 1 ? 'test' : 'practice';
+        $show_answer = !$is_test;
         $q_set = $this->parse_manifest(public_path('upload/lst/'.$quiz_set_name.'/manifest.json'));
         $manifest_url = url('upload/lst/'.$quiz_set_name.'/manifest.json');
         $audio_folder_url = url('upload/lst/'.$quiz_set_name);
@@ -45,6 +46,7 @@ class LstController extends Controller
             'audio_folder_url' => $audio_folder_url,
             'send_answer_url' => $send_answer_url,
             'quiz_set_name' => $quiz_set_name,
+            'show_answer' => $show_answer,
         ]);
     }
 

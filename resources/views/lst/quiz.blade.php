@@ -12,7 +12,8 @@
 
     <div id="config" data-manifest-url="{{ $manifest_url }}" data-audio-folder-url="{{ $audio_folder_url }}"
          data-send-answer-url="{{ $send_answer_url }}" data-username="{{ $username }}"
-         data-group-name="{{ $group_name }}" data-quiz-set-name="{{ $quiz_set_name }}"></div>
+         data-group-name="{{ $group_name }}" data-quiz-set-name="{{ $quiz_set_name }}"
+         data-show-answer="{{ $show_answer }}"></div>
     <div id="app">
         <div class="row" v-if="showIntro">
             <div class="col-md-12">
@@ -56,7 +57,7 @@
             </div>
         </div>
         <div v-if="showQuiz">
-            <quiz-index-header :index="setIndex + 1"></quiz-index-header>
+            <quiz-index-header :index="setIndex + 1" :question-num="questionNum"></quiz-index-header>
             <quiz-player v-for="(wavs, index) in allWavs"
                          :audio-wav-srcs="wavs"
                          only-once
@@ -65,7 +66,23 @@
             <div v-if="showQuestion">
                 <wm-question v-for="(q, index) in quizContents" :index="index + 1" :word-prefix="q.firstChar" ref="questions">
                 </wm-question>
-                <button class="btn btn-primary" v-on:click="submit">回答を送信</button>
+                <button class="btn btn-primary" v-on:click="submit">@{{ submitBtnText }}</button>
+            </div>
+        </div>
+        <div class="row" v-if="showAnswer">
+            <div class="col-md-12">
+                <div v-for="(q, index) in quizContents">
+                    <h3 class="subtitle">第@{{ index + 1 }}文</h3>
+                    <p>
+                        正解：@{{ rawData.questionSets[setIndex].answers[index].correctness ? "正しい" : "誤り" }},
+                        @{{ rawData.questionSets[setIndex].answers[index].lastWord }}
+                    </p>
+                    <p>
+                        あなたの回答：@{{ $refs.questions[index].answer1 == 1 ? "正しい" : "誤り" }},
+                        @{{ $refs.questions[index].wordPrefix + $refs.questions[index].answer2 }}
+                    </p>
+                </div>
+                <button class="btn btn-primary" v-on:click="submit">@{{ submitBtnText }}</button>
             </div>
         </div>
     </div>

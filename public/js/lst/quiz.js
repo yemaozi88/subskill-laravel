@@ -8,10 +8,11 @@
 
     Vue.component('quiz-index-header', {
         template: '<div class="page-header">\
-        <h1>第{{ index }}問</h1>\
+        <h1>第{{ index }}問<small> 計{{ questionNum }}文連続</small></h1>\
         </div>',
         props: [
-            'index'
+            'index',
+            'questionNum'
         ]
     });
 
@@ -147,6 +148,7 @@
     var username = configElement.data('username');
     var groupName = configElement.data('group-name');
     var quizSetName = configElement.data('quiz-set-name');
+    var showAnswerMode = configElement.data('show-answer') == 1;
 
     var validateAnswer = function () {
         for (var wmq of this.$refs.questions) {
@@ -215,10 +217,18 @@
         });
     };
 
+    var switchToNextSet = function () {
+        this.setIndex++;
+        this.step = 1;
+        //this.$refs.quizPlayer.reset();
+        this.loadSet(this.rawData.questionSets[this.setIndex]);
+    };
+
     var app = new Vue({
         el: '#app',
         data: {
             isDataLoaded: false,
+            showAnswerMode: showAnswerMode,
             audioFolderUrl: "",
             rawData: null,
             waiting: false,
@@ -261,6 +271,9 @@
             showFinishedMessage: function () {
                 return (this.step == 3) && !this.waiting;
             },
+            showAnswer: function () {
+                return this.step == 4 && !this.waiting;
+            },
             showWaiting: function () {
                 return this.waiting;
             },
@@ -274,6 +287,16 @@
                     ret.push(newWavs);
                 }
                 return ret;
+            },
+            questionNum: function () {
+                return this.quizContents.length;
+            },
+            submitBtnText: function () {
+                if (this.setIndex >= this.rawData.questionSets.length - 1) {
+                    return "回答を送信";
+                } else {
+                    return "次へ";
+                }
             }
         },
         methods: {
@@ -306,22 +329,39 @@
                 this.loadSet(questionSet);
             },
             submit: function () {
-                if (!validateAnswer.call(this)) {
-                    alert("文の正誤を選択してください。\n単語に英文字以外の文字は入れないでくさい。");
-                    return;
+                if (this.step == 2) {
+                    // If now trying to submit the answer
+                    if (!validateAnswer.call(this)) {
+                        // Do nothing if answer is not correctly filled
+                        alert("文の正誤を選択してください。\n単語に英文字以外の文字は入れないでくさい。");
+                        return;
+                    }
+                    // add current answers to the answer container
+                    var ansList = collectAnswer.call(this);
+                    this.answers.push(ansList);
+                    if (this.showAnswerMode) {
+                        // We need to show the answers first
+                        this.step = 4;
+                    } else {
+                        // Otherwise just submit answer or go next
+                        if (this.setIndex >= this.rawData.questionSets.length - 1) {
+                            // If we have finished all the tests
+                            this.waiting = true;
+                            sendAnswer.call(this);
+                        } else {
+                            switchToNextSet.call(this);
+                        }
+                    }
+                } else if (this.step == 4) {
+                    // If now showing the answer for last question set
+                    if (this.setIndex >= this.rawData.questionSets.length - 1) {
+                        // If we have finished all the tests
+                        this.waiting = true;
+                        sendAnswer.call(this);
+                    } else {
+                        switchToNextSet.call(this);
+                    }
                 }
-                var ansList = collectAnswer.call(this);
-                this.answers.push(ansList);
-                if (this.setIndex >= this.rawData.questionSets.length - 1) {
-                    // If we have finished all the tests
-                    this.waiting = true;
-                    sendAnswer.call(this);
-                    return;
-                }
-                this.setIndex++;
-                this.step = 1;
-                //this.$refs.quizPlayer.reset();
-                this.loadSet(this.rawData.questionSets[this.setIndex]);
             }
         }
     });
