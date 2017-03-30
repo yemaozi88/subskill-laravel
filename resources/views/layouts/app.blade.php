@@ -5,20 +5,23 @@
 
     @section('scripts')
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{{ URL::asset("js/jquery.min.js") }}"></script>
+    <!-- <script src="{{ URL::asset("js/jquery.min.js") }}"></script> -->
 
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/bootstrap.min.css") }}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/bootstrap.min.css") }}"> -->
 
     <!-- Optional theme -->
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/bootstrap-theme.min.css") }}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/bootstrap-theme.min.css") }}"> -->
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="{{ URL::asset("js/bootstrap.min.js") }}"></script>
+    <!-- <script src="{{ URL::asset("js/bootstrap.min.js") }}"></script> -->
+        <script src="{{ URL::asset("js/app.js") }}"></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/framework.css") }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/app.css") }}">
 
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/custom.css") }}">
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/framework.css") }}">
+
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset("css/custom.css") }}">
 
     @show
 

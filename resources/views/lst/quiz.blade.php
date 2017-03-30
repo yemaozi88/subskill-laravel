@@ -4,10 +4,6 @@
 
 @section('title', '作動記憶クイズ')
 
-@push('scripts')
-    <script src="{{ URL::asset("js/vue.js") }}"></script>
-@endpush
-
 @section('content')
 
     <div id="config" data-manifest-url="{{ $manifest_url }}" data-audio-folder-url="{{ $audio_folder_url }}"
