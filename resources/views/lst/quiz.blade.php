@@ -2,7 +2,7 @@
 
 @if (false)<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"> @endif
 
-@section('title', '作動記憶クイズ')
+@section('title', '作動記憶クイズ(Listening)')
 
 @section('content')
 
@@ -28,7 +28,7 @@
                     英文は一度しか流れず、聞きなおすことはできません。
                 </p>
                 <p>
-                    再生が終了すると、1.5秒後に解答欄が表示されます。<br>
+                    再生が終了すると、解答欄が表示されます。<br>
                     それぞれの文章の最後の単語、および内容の正誤を答えてください。<br>
                 </p>
                 <p>

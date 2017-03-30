@@ -1,0 +1,22 @@
+{
+    "questionSets": [
+        {
+            "texts": [
+                "London is the capital city of France.",
+                "Drivers have to stop when the traffic light is red."
+            ],
+            "questionNum": 2,
+            "timeLimit": 20,
+            "answers": [
+                {
+                    "correctness": false,
+                    "lastWord": "France"
+                },
+                {
+                    "correctness": true,
+                    "lastWord": "red"
+                }
+            ]
+        }
+    ]
+}

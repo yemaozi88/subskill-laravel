@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', '作動記憶クイズ(Listening)')
+@section('title', '作動記憶クイズ(Reading)')
 
 @push('scripts')
-<script src="{{ URL::asset('js/lst/index.js') }}"></script>
+<script src="{{ URL::asset('js/rst/index.js') }}"></script>
 @endpush
 
 @section('content')
 
     <div class="page-header">
-        <h1>リスニング作動記憶クイズ（{{ $is_test ? "実力テスト" : "練習" }}）
+        <h1>リーディング作動記憶クイズ（{{ $is_test ? "実力テスト" : "練習" }}）
             <small>情報登録</small>
         </h1>
     </div>
 
-    <form class="" action="{{ url('lst/quiz') }}" method="get">
+    <form class="" action="{{ url('rst/quiz') }}" method="get">
         <div class="form-group">
             <label for="username">Username</label>
             <p class="form-control-static">

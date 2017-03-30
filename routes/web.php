@@ -28,6 +28,12 @@ Route::group(['prefix' => 'lst'], function () {
     Route::get('quiz', 'LstController@quiz');
 });
 
+// Reading spanning test
+Route::group(['prefix' => 'rst'], function () {
+    Route::get('/', 'RstController@index');
+    Route::get('quiz', 'RstController@quiz');
+});
+
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
     Route::get('/', 'AdminController@index');

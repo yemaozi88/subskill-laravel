@@ -73,6 +73,11 @@ class LstController extends Controller
                 }
             }
             $user_id = $user->id;
+        } else {
+            return response()->json([
+                'ret' => 'failed',
+                'reason' => 'Username must be provided',
+            ]);
         }
         $info = [
             'user_id' => $user_id,
