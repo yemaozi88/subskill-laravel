@@ -17,6 +17,29 @@
                     "lastWord": "red"
                 }
             ]
+        },
+        {
+            "texts": [
+                "Newton was a famous Japanese scientist.",
+                "We use e-mail to keep in touch with friends.",
+                "A librarian is a person who works in a library."
+            ],
+            "questionNum": 3,
+            "timeLimit": 20,
+            "answers": [
+                {
+                    "correctness": false,
+                    "lastWord": "scientist"
+                },
+                {
+                    "correctness": true,
+                    "lastWord": "friends"
+                },
+                {
+                    "correctness": true,
+                    "lastWord": "library"
+                }
+            ]
         }
     ]
 }
