@@ -7,8 +7,9 @@
 @section('content')
 
     <div id="app">
-        <rst-app :username="{{ $username }}"
-                 :group-name="{{ $group_name }}"
+        <rst-app username="{{ $username }}"
+                 group-name="{{ $group_name }}"
+                 manifest-url="{{ $manifest_url }}"
                  :question-num="{{ $q_num }}"></rst-app>
     </div>
 

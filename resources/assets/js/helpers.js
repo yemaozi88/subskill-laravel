@@ -40,4 +40,13 @@ module.validateUsername = function (username) {
     return [true];
 };
 
+/**
+ * Get a unique string generated randomly.
+ */
+module.getUniqueStr = function (myStrong) {
+    var strong = 1000;
+    if (myStrong) strong = myStrong;
+    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
+};
+
 window.Helpers = module;

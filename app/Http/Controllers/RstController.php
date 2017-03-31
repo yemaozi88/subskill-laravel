@@ -28,7 +28,6 @@ class RstController extends Controller
         $show_answer = !$is_test;
         $q_set = $this->parse_manifest(public_path('upload/rst/'.$quiz_set_name.'/manifest.json'));
         $manifest_url = url('upload/rst/'.$quiz_set_name.'/manifest.json');
-        $audio_folder_url = url('upload/rst/'.$quiz_set_name);
         $send_answer_url = url('api/rst/create');
         $q_num = count($q_set);
 
@@ -38,7 +37,6 @@ class RstController extends Controller
             'username' => $username,
             'group_name' => $group_name,
             'manifest_url' => $manifest_url,
-            'audio_folder_url' => $audio_folder_url,
             'send_answer_url' => $send_answer_url,
             'quiz_set_name' => $quiz_set_name,
             'show_answer' => $show_answer,
