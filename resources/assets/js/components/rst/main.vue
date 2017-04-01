@@ -22,10 +22,31 @@
                     始める
                 </button>
             </div>
-            <quiz-index-header index="3" question-num="2" v-if="ifShowQuizIndexHeader"></quiz-index-header>
-            <question-displayer :sentences="sentences" v-if="ifShowQuestionDisplayer" 
-                    v-on:question-displayed="onQuestionDisplayed"></question-displayer>
-            <answer-sheet-list :questions="currentQuestions" v-if="isShowAnswerSheetList"></answer-sheet-list>
+
+            <quiz-index-header :index="setIndex + 1" :question-num="currentSetQuestionNum" v-if="ifShowQuizIndexHeader">
+            </quiz-index-header>
+
+            <question-displayer :sentences="currentQuestionSentences" v-if="ifShowQuestionDisplayer" 
+                    v-on:question-displayed="onQuestionDisplayed" :time-limit="currentQuestionTimeLimit">
+            </question-displayer>
+
+            <answer-sheet-list :questions="currentQuestions" v-if="isShowAnswerSheetList"
+                    v-on:answer-changed="onAnswerChanged"></answer-sheet-list>
+            <button class="btn btn-default" 
+                    v-on:click="onAnswerSheetBtnClicked" v-if="isShowAnswerSheetList">次へ進む</button>
+
+            <answer-table v-if="isShowAnswerTable" :user-answers="currentAnswers"
+                    :correct-answers="currentQuestions"></answer-table>
+            <button class="btn btn-default"
+                    v-on:click="onAnswerTableBtnClicked" v-if="isShowAnswerTable" 
+                    :disabled="isSendingData">次へ進む</button>
+            <loading-icon v-if="isShowLoadingIcon"></loading-icon>
+
+            <div v-if="isShowSuccessMessage">
+                <p class="bg-success">
+                データの送信に成功しました。
+                </p>
+            </div>
         </div>
             
     </div>
@@ -35,14 +56,19 @@
 <script>    
 import QuizIndexHeader from "../share/quiz-index-header"
 import AnswerSheetList from "../share/answer-sheet-list"
-import QuestionDisplayer from "./question-displayer.vue"
+import QuestionDisplayer from "./question-displayer"
+import AnswerTable from "../share/answer-table"
+import LoadingIcon from "../share/loading-icon"
 import $ from "jquery"
+require("../../helpers")
 
 export default {
     components: {
         "quiz-index-header": QuizIndexHeader,
         "answer-sheet-list": AnswerSheetList,
-        "question-displayer": QuestionDisplayer
+        "question-displayer": QuestionDisplayer,
+        "answer-table": AnswerTable,
+        "loading-icon": LoadingIcon
     },
     data: function() {
         return {
@@ -53,7 +79,8 @@ export default {
              * See manifest.json
              */
             rawData: {},
-            sentences: ["nihaoa", "wobuhao"]
+            answers: [],
+            isSendingData: false
         };
     },
     props: {
@@ -62,6 +89,10 @@ export default {
         },
         groupName: {
             default: "Default_Group_Name"
+        },
+        quizSetName: {
+            type: String,
+            default: "default_quiz_set"
         },
         questionNum: {
             type: Number,
@@ -74,6 +105,10 @@ export default {
         showAnswer: {
             type: Boolean,
             default: false
+        },
+        sendAnswerUrl: {
+            type: String,
+            require: true
         }
     },
     computed: {
@@ -81,13 +116,22 @@ export default {
             return this.state == 1;
         },
         ifShowQuizIndexHeader () {
-            return this.state == 2 || this.state == 3;
+            return this.state == 2 || this.state == 3 || this.state == 4;
         },
         ifShowQuestionDisplayer () {
             return this.state == 2;
         },
         isShowAnswerSheetList () {
             return this.state == 3;
+        },
+        isShowAnswerTable () {
+            return this.state == 4;
+        },
+        isShowLoadingIcon () {
+            return this.isSendingData;
+        },
+        isShowSuccessMessage() {
+            return this.state == 5;
         },
         isStartBtnDisabled () {
             return !this.questionLoaded;
@@ -111,6 +155,41 @@ export default {
         },
         currentQuestions () {
             return this.allQuestions[this.setIndex];
+        },
+        currentSetQuestionNum() {
+            return this.currentQuestions.length;
+        },
+        currentQuestionSentences() {
+            return this.rawData.questionSets[this.setIndex].texts;
+        },
+        currentQuestionTimeLimit() {
+            return this.rawData.questionSets[this.setIndex].timeLimit;
+        },
+        currentAnswers() {
+            return this.answers[this.setIndex];
+        },
+        isCurrentAnswersLegal () {
+            if (!(this.answers[this.setIndex] instanceof Array)) {
+                return false;
+            }
+            if (this.answers[this.setIndex].length != this.currentSetQuestionNum) {
+                return false;
+            }
+            for (var answer of this.answers[this.setIndex]) {
+                if (answer === null) {
+                    return false;
+                }
+                if (!answer.hasOwnProperty("word") || (typeof answer.word) !== "string") {
+                    return false;
+                }
+                if (!answer.hasOwnProperty("judgement") || (typeof answer.judgement) !== "boolean") {
+                    return false;
+                }
+                if (!Helpers.validateEnglishWord(answer.word)) {
+                    return false;
+                }
+            }
+            return true;
         }
     },
     methods: {
@@ -119,6 +198,74 @@ export default {
         },
         onQuestionDisplayed () {
             this.state = 3;
+        },
+        onAnswerSheetBtnClicked () {
+            if (!this.isCurrentAnswersLegal) {
+                alert("文の正誤を選択してください。\n単語に英文字以外の文字は入れないでくさい。");
+                return;
+            }
+            if (this.showAnswer) {
+                this.state = 4;
+            } else {
+                this.goNextQuestionSet();
+            }
+        },
+        onAnswerTableBtnClicked () {
+            this.goNextQuestionSet();
+        },
+        onAnswerChanged(data) {
+            while (this.answers.length <= this.setIndex) {
+                this.answers.push(null);
+            }
+            this.answers.splice(this.setIndex, 1, data);
+        },
+        goNextQuestionSet () {
+            if (this.setIndex < this.allQuestions.length - 1) {
+                // If not the last set, go to next set
+                this.setIndex++;
+                this.state = 2;
+            } else {
+                // otherwise send answer
+                this.sendAnswer();
+            }
+        },
+        sendAnswer () {
+            var sentData = {
+                correct_num: 0,
+                question_num: 0,
+                username: this.username,
+                group_name: this.groupName,
+                quiz_set_name: this.quizSetName,
+                last_word_list: '',
+                judgement_list: ''
+            };
+
+            for (var setAnswers of this.answers) {
+                for (var content of setAnswers) {
+                    sentData.question_num++;
+                    if (content.isJudgementCorrect && content.isWordCorrect) {
+                        sentData.correct_num++;
+                    }
+                    sentData.last_word_list += "#" + content.word;
+                    sentData.judgement_list += "#" + (content.judgement ? 'T' : 'F');
+                }
+            }
+
+            var jqxhr = $.ajax({url: this.sendAnswerUrl, method: "POST", data: sentData, dataType: "json"});
+            jqxhr.done((response)=>{
+                if (response.ret == "ok") {
+                    // Go to the final message
+                    this.state = 5;
+                } else {
+                    alert("Some error happened:" + response.reason);
+                }
+                this.isSendingData = false;
+            }).fail((jqXHR, textStatus, errorThrown)=>{
+                alert("Some error happened:" + errorThrown.toString());
+                this.isSendingData = false;
+            });
+
+            this.isSendingData = true;
         }
     },
     mounted () {

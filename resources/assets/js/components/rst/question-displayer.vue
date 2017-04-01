@@ -73,6 +73,7 @@ export default {
             this.elapsedTime = this.timeLimit;
             this.state = 1;
             clearInterval(this.timer);
+            this.timer = null;
             this.$emit("question-displayed");
         }
     }

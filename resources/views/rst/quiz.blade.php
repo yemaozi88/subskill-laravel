@@ -10,6 +10,9 @@
         <rst-app username="{{ $username }}"
                  group-name="{{ $group_name }}"
                  manifest-url="{{ $manifest_url }}"
+                 send-answer-url="{{ $send_answer_url }}"
+                 :show-answer="{{ $show_answer }}"
+                 quiz-set-name="{{ $quiz_set_name }}"
                  :question-num="{{ $q_num }}"></rst-app>
     </div>
 

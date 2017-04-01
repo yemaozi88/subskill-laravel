@@ -40,6 +40,30 @@ module.validateUsername = function (username) {
     return [true];
 };
 
+module.isEnglishChar = function (char) {
+    var charCode = char.charCodeAt(0);
+    if (charCode >= 'a'.charCodeAt(0) && charCode <= 'z'.charCodeAt(0) ||
+        charCode >= 'A'.charCodeAt(0) && charCode <= 'Z'.charCodeAt(0) ||
+        char == '-') {
+        return true;
+    }
+    return false;
+};
+
+/**
+ * Validate if the word is legal English word.
+ * A legal English word is defined as:
+ * Contains only letters or "-".
+ */
+module.validateEnglishWord = function (username) {
+    for (var i = 0; i < username.length; i++) {
+        if (!module.isEnglishChar(username[i])) {
+            return false;
+        }
+    }
+    return true;
+};
+
 /**
  * Get a unique string generated randomly.
  */

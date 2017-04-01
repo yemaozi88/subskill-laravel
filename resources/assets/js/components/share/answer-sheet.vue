@@ -33,7 +33,7 @@ export default {
     data () {
         return {
             answer1: null,
-            answer2: null
+            answer2: ""
         }
     },
     props: {

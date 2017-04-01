@@ -31,12 +31,16 @@ export default {
     },
     methods: {
         onAnswerChanged(index, data) {
-            this.answers[index] = {
+            while (this.answers.length <= index) {
+                this.answers.push(null);
+            }
+            this.answers.splice(index, 1, {
                 word: data.word,
                 judgement: data.judgement,
                 isWordCorrect: data.word === this.questions[index].lastWord,
-                isJudgementCorrect: data.word === this.questions[index].correctness
-            };
+                isJudgementCorrect: data.judgement === this.questions[index].correctness
+            });
+            this.$emit("answer-changed", this.answers);
         }
     }
 }
