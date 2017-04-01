@@ -10,3 +10,8 @@ _ide_helper.php
 _ide_helper_models.php
 **/.DS_Store
 npm-debug.log
+
+public/css/app.css
+public/css/app.css.map
+public/js/app.js
+public/fonts/vendor/
