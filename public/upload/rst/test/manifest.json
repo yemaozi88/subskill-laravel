@@ -105,7 +105,7 @@
                     "lastWord": "Japan"
                 },
                 {
-                    "correctness": false,
+                    "correctness": true,
                     "lastWord": "States"
                 }
             ]
