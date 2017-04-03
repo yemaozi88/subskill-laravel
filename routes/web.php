@@ -34,6 +34,12 @@ Route::group(['prefix' => 'rst'], function () {
     Route::get('quiz', 'RstController@quiz');
 });
 
+// Digital spanning test
+Route::group(['prefix' => 'dst'], function () {
+    Route::get('/', 'DstController@index');
+    Route::get('quiz', 'DstController@quiz');
+});
+
 // Admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
     Route::get('/', 'AdminController@index');
