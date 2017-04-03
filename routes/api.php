@@ -15,3 +15,4 @@ use Illuminate\Http\Request;
 
 Route::post('/lst/create', 'LstController@create');
 Route::post('/rst/create', 'RstController@create');
+Route::post('/dst/create', 'DstController@create');

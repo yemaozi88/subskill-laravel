@@ -73,4 +73,11 @@ module.getUniqueStr = function (myStrong) {
     return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
 };
 
+/**
+ * Return a random integer from [min, max] (inclusive).
+ */
+module.randInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 window.Helpers = module;

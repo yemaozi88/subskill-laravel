@@ -33,7 +33,8 @@
             <answer-sheet-list :questions="currentQuestions" v-if="isShowAnswerSheetList"
                     v-on:answer-changed="onAnswerChanged"></answer-sheet-list>
             <button class="btn btn-default" 
-                    v-on:click="onAnswerSheetBtnClicked" v-if="isShowAnswerSheetList">次へ進む</button>
+                    v-on:click="onAnswerSheetBtnClicked" v-if="isShowAnswerSheetList" :disabled="isSendingData">
+                    次へ進む</button>
 
             <answer-table v-if="isShowAnswerTable" :user-answers="currentAnswers"
                     :correct-answers="currentQuestions"></answer-table>
