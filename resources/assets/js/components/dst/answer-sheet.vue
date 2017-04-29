@@ -2,10 +2,13 @@
 
 <div>
     <div class="form-group">
-        <label :for="inputId">数字({{ question.num }}個)を{{ orderText }}入力してください(半角)</label>
+        <label :for="inputId">
+            数字({{ question.num }}個)を{{ orderText }}入力してください(半角)。
+            入力が終わったら，「次へ進む」ボタンを押してください。
+        </label>
         <input type="text" class="form-control" :id="inputId" placeholder="Selected numbers" 
                 :maxlength="question.num" v-model="answer" v-on:input="onAnswerChanged"
-                v-on:keypress="onKeyPressed($event)">
+                v-on:keypress="onKeyPressed($event)" ref="input">
     </div>
 </div>
 
@@ -62,6 +65,9 @@ export default {
                 event.preventDefault();
             }
         }
+    },
+    mounted() {
+        this.$refs.input.focus();
     }
 }
 </script>
