@@ -56,7 +56,7 @@
 
 <script>    
 import QuizIndexHeader from "../share/quiz-index-header"
-import AnswerSheetList from "../share/answer-sheet-list"
+import AnswerSheetList from "./answer-sheet-list"
 import QuestionDisplayer from "./question-displayer"
 import AnswerTable from "../share/answer-table"
 import LoadingIcon from "../share/loading-icon"

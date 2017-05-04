@@ -28,7 +28,7 @@ class LstController extends Controller
         $username = $request->input('username');
         $group_name = $request->input('group_name');
         $quiz_set_name = $request->input('is_test') == 1 ? 'test' : 'practice';
-        $show_answer = !$is_test;
+        $show_answer = !$is_test ? "true" : "false";
         $q_set = $this->parse_manifest(public_path('upload/lst/'.$quiz_set_name.'/manifest.json'));
         $manifest_url = url('upload/lst/'.$quiz_set_name.'/manifest.json');
         $audio_folder_url = url('upload/lst/'.$quiz_set_name);
@@ -36,7 +36,7 @@ class LstController extends Controller
 
         $q_num = count($q_set);
         //var_dump($q_set);
-        return view('lst/quiz', [
+        return view('lst/new_quiz', [
             'is_test' => $is_test,
             'q_num' => $q_num,
             'username' => $username,

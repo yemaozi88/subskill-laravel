@@ -1,12 +1,12 @@
 <template>
 
-<div>
+<span>
     <audio v-for="(url, index) in urls" preload="auto" v-on:canplay="onCanPlay(index)"
             v-on:ended="onEnded(index)" ref="audios">
         <source :src="url" type="audio/wav">
         Your browser does not support the audio element.
     </audio>
-</div>
+</span>
 
 </template>
 
@@ -55,6 +55,13 @@ export default {
                 setTimeout(() => {
                     this.$refs.audios[index + 1].play();
                 }, this.interval * 1000);
+            }
+        },
+        reload() {
+            this.playedNum = 0;
+            this.loadedNum = 0;
+            for (var i = 0; i < this.urls.length; i++) {
+                this.$refs.audios[i].load();
             }
         }
     }

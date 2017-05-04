@@ -1,7 +1,10 @@
 {
     "questionSets": [
         {
-            "wavs": ["2_1.wav"],
+            "wavs": [
+                "1.wav",
+                "2.wav"
+            ],
             "questionNum": 2,
             "answers": [
                 {
@@ -17,7 +20,11 @@
             ]
         },
         {
-            "wavs": ["3_1.wav"],
+            "wavs": [
+                "7.wav",
+                "8.wav",
+                "9.wav"
+            ],
             "questionNum": 3,
             "answers": [
                 {
@@ -38,7 +45,12 @@
             ]
         },
         {
-            "wavs": ["4_1.wav"],
+            "wavs": [
+                "16.wav",
+                "17.wav",
+                "18.wav",
+                "19.wav"
+            ],
             "questionNum": 4,
             "answers": [
                 {
@@ -64,7 +76,13 @@
             ]
         },
         {
-            "wavs": ["5_1.wav"],
+            "wavs": [
+                "28.wav",
+                "29.wav",
+                "30.wav",
+                "31.wav",
+                "32.wav"
+            ],
             "questionNum": 5,
             "answers": [
                 {
