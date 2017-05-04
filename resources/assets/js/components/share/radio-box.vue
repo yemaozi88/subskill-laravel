@@ -8,7 +8,8 @@
         <label>
             <input 
                 type="radio" :name="radioName"
-                :value="index + 1" v-on:click="onValueChanged($event.target.value)">
+                :value="index + 1" :checked="value == index + 1"
+                v-on:click="onValueChanged($event.target.value)">
             {{ text }}
         </label>
     </div>

@@ -208,7 +208,8 @@ export default {
             this.answers[this.setIndex] = [];
             for (var i = 0; i < answers.length; i++) {
                 this.answers[this.setIndex].push({
-                    judgement: answers[i] == 1
+                    judgement: answers[i] == 1,
+                    isJudgementCorrect: (answers[i] == 1) == this.currentQuestions[i].correctness
                 });
             }
             this.state = 3;
@@ -229,10 +230,10 @@ export default {
         },
         onAnswerPartTwoChanged(data) {
             for (var i = 0; i < data.length; i++) {
-                this.answers[this.setIndex].splice(i, 1, {
+                this.answers[this.setIndex].splice(i, 1, _.assign({}, this.answers[this.setIndex][i], {
                     word: data[i],
-                    judgement: this.answers[this.setIndex][i].judgement
-                });
+                    isWordCorrect: data[i] == this.currentQuestions[i].lastWord
+                }));
             }
         },
         goNextQuestionSet () {

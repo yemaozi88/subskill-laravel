@@ -36,9 +36,7 @@ export default {
             }
             this.answers.splice(index, 1, {
                 word: data.word,
-                judgement: data.judgement,
-                isWordCorrect: data.word === this.questions[index].lastWord,
-                isJudgementCorrect: data.judgement === this.questions[index].correctness
+                isWordCorrect: data.word === this.questions[index].lastWord
             });
             this.$emit("answer-changed", this.answers);
         }

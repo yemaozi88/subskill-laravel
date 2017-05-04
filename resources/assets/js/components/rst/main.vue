@@ -27,7 +27,7 @@
             </quiz-index-header>
 
             <question-displayer :sentences="currentQuestionSentences" v-if="ifShowQuestionDisplayer" 
-                    v-on:question-displayed="onQuestionDisplayed" :time-limit="currentQuestionTimeLimit">
+                    @question-displayed="onQuestionDisplayed" :time-limit="currentQuestionTimeLimit">
             </question-displayer>
 
             <answer-sheet-list :questions="currentQuestions" v-if="isShowAnswerSheetList"
@@ -61,6 +61,7 @@ import QuestionDisplayer from "./question-displayer"
 import AnswerTable from "../share/answer-table"
 import LoadingIcon from "../share/loading-icon"
 import $ from "jquery"
+import _ from "lodash"
 require("../../helpers")
 
 export default {
@@ -177,7 +178,7 @@ export default {
                 return false;
             }
             for (var answer of this.answers[this.setIndex]) {
-                if (answer === null) {
+                if (answer === null || answer === undefined) {
                     return false;
                 }
                 if (!answer.hasOwnProperty("word") || (typeof answer.word) !== "string") {
@@ -197,7 +198,17 @@ export default {
         onStartBtnClicked () {
             this.state = 2;
         },
-        onQuestionDisplayed () {
+        onQuestionDisplayed (answers) {
+            while (this.answers.length <= this.setIndex) {
+                this.answers.push(null);
+            }
+            this.answers[this.setIndex] = [];
+            for (var i = 0; i < answers.length; i++) {
+                this.answers[this.setIndex].push({
+                    judgement: answers[i] == 1,
+                    isJudgementCorrect: (answers[i] == 1) == this.currentQuestions[i].correctness
+                });
+            }
             this.state = 3;
         },
         onAnswerSheetBtnClicked () {
@@ -215,10 +226,11 @@ export default {
             this.goNextQuestionSet();
         },
         onAnswerChanged(data) {
-            while (this.answers.length <= this.setIndex) {
-                this.answers.push(null);
+            for (var i = 0; i < data.length; i++) {
+                this.answers[this.setIndex].splice(
+                    i, 1, 
+                    _.assign({}, this.answers[this.setIndex][i], data[i]));
             }
-            this.answers.splice(this.setIndex, 1, data);
         },
         goNextQuestionSet () {
             if (this.setIndex < this.allQuestions.length - 1) {

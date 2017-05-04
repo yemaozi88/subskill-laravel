@@ -8,7 +8,12 @@
             <span class="glyphicon glyphicon-time"></span> 
             <strong>{{ remainedTime }}</strong>s
         </li>
-        <li v-for="text in sentences" class="list-group-item">{{ text }}</li>
+        <li v-for="(text, index) in sentences" class="list-group-item">
+            {{ text }}
+            <radio-box :items="['正しい', '誤り']" v-model="answers[index]">
+                文の正誤：
+            </radio-box>
+        </li>
     </ul>
     <button class="btn btn-default" v-if="isShowQuestionList" v-on:click="onGoNextBtnClicked">次へ進む</button>
 </div>
@@ -18,13 +23,18 @@
 
 
 <script>
-
+import RadioBox from "../share/radio-box"
 export default {
+    components: {
+        "radio-box": RadioBox
+    },
     data () {
         return {
             state: 1,
             elapsedTime: 0,
-            timer: null
+            timer: null,
+            /** [value0, value1, ...] */
+            answers: []
         }
     },
     props: {
@@ -32,7 +42,12 @@ export default {
          * Example:
          * ["sentence1", "sentence2"]
          */
-        sentences: Array,
+        sentences: {
+            type: Array,
+            default: function() {
+                return [];
+            }
+        },
         /* In seconds. */
         timeLimit: {
             type: Number,
@@ -74,8 +89,22 @@ export default {
             this.state = 1;
             clearInterval(this.timer);
             this.timer = null;
-            this.$emit("question-displayed");
+            this.$emit("question-displayed", this.answers);
+        },
+        reallocateAnswers() {
+            this.answers = [];
+            while (this.answers.length < this.sentences.length) {
+                this.answers.push(1);
+            }
         }
+    },
+    watch: {
+        sentences(newSentences) {
+            this.reallocateAnswers();
+        }
+    },
+    mounted() {
+        this.reallocateAnswers();
     }
 }
 
