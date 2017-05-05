@@ -229,12 +229,14 @@ export default {
             this.goNextQuestionSet();
         },
         onAnswerPartTwoChanged(data) {
+            var newAnswers =  _.clone(this.answers[this.setIndex]);
             for (var i = 0; i < data.length; i++) {
-                this.answers[this.setIndex].splice(i, 1, _.assign({}, this.answers[this.setIndex][i], {
+                newAnswers[i] = _.assign({}, newAnswers[i], {
                     word: data[i],
                     isWordCorrect: data[i] == this.currentQuestions[i].lastWord
-                }));
+                });
             }
+            this.answers.splice(this.setIndex, 1, newAnswers);
         },
         goNextQuestionSet () {
             if (this.setIndex < this.allQuestions.length - 1) {

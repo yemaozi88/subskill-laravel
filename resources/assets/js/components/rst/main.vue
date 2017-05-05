@@ -202,18 +202,19 @@ export default {
             while (this.answers.length <= this.setIndex) {
                 this.answers.push(null);
             }
-            this.answers[this.setIndex] = [];
+            var newAnswers = [];
             for (var i = 0; i < answers.length; i++) {
-                this.answers[this.setIndex].push({
+                newAnswers.push({
                     judgement: answers[i] == 1,
                     isJudgementCorrect: (answers[i] == 1) == this.currentQuestions[i].correctness
                 });
             }
+            this.answers.splice(this.setIndex, 1, newAnswers);
             this.state = 3;
         },
         onAnswerSheetBtnClicked () {
             if (!this.isCurrentAnswersLegal) {
-                alert("文の正誤を選択してください。\n単語に英文字以外の文字は入れないでくさい。");
+                alert("単語に英文字以外の文字は入れないでくさい。");
                 return;
             }
             if (this.showAnswer) {
@@ -226,11 +227,11 @@ export default {
             this.goNextQuestionSet();
         },
         onAnswerChanged(data) {
+            var newAnswers =  _.clone(this.answers[this.setIndex]);
             for (var i = 0; i < data.length; i++) {
-                this.answers[this.setIndex].splice(
-                    i, 1, 
-                    _.assign({}, this.answers[this.setIndex][i], data[i]));
+                newAnswers[i] = _.assign({}, newAnswers[i], data[i]);
             }
+            this.answers.splice(this.setIndex, 1, newAnswers);
         },
         goNextQuestionSet () {
             if (this.setIndex < this.allQuestions.length - 1) {

@@ -207,7 +207,7 @@ export default {
         },
         sendAnswer() {
             var sentData = {
-                correct_num: _.countBy(this.answers, answer => answer.isAnswerCorrect ? '1' : '0')['1'],
+                correct_num: _.countBy(this.answers, answer => answer.isAnswerCorrect ? '1' : '0')['1'] || 0,
                 question_num: this.questions.length,
                 username: this.username,
                 group_name: this.groupName,

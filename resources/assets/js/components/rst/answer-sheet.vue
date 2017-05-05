@@ -51,6 +51,9 @@ export default {
                 word: this.wordFirstLetter + this.answer2
             });
         }
+    },
+    mounted() {
+        this.onAnswerChanged();
     }
 }
 

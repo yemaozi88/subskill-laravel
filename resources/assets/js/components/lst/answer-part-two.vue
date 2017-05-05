@@ -30,11 +30,12 @@ export default {
     },
     methods: {
         onAnswerChanged(index, value) {
-            // We don't need to display answers so no need to trigger responsive events
             while (this.questions.length > this.answers.length) {
                 this.answers.push(null);
             }
-            this.answers.splice(this.questions.length);
+            while (this.questions.length < this.answers.length) {
+                this.answers.pop();
+            }
             this.answers.splice(index, 1, this.questions[index].lastWord[0] + value);
             
             this.$emit("changed", this.answers);
