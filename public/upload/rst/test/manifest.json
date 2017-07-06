@@ -6,7 +6,7 @@
                 "People in the U.S. often use knives and forks when they eat."
             ],
             "questionNum": 2,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": false,
@@ -24,7 +24,7 @@
                 "Sumo wrestlers are usually short and very thin."
             ],
             "questionNum": 2,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": true,
@@ -43,7 +43,7 @@
                 "George Washington was the first president of the United States."
             ],
             "questionNum": 3,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": false,
@@ -66,7 +66,7 @@
                 "A taxi driver is a person whose job is to teach cooking."
             ],
             "questionNum": 3,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": true,
@@ -90,7 +90,7 @@
                 "Baseball is very popular both in Japan and the United States."
             ],
             "questionNum": 4,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": false,
@@ -118,7 +118,7 @@
                 "We can use an oven when we bake bread."
             ],
             "questionNum": 4,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": false,
@@ -147,7 +147,7 @@
                 "There are many temples and shrines in Kyoto."
             ],
             "questionNum": 5,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": true,
@@ -180,7 +180,7 @@
                 "Mathematics helps us understand about numbers."
             ],
             "questionNum": 5,
-            "timeLimit": 20,
+            "timeLimit": 300,
             "answers": [
                 {
                     "correctness": true,
