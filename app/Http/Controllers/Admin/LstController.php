@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Helper;
 use App\Http\Controllers\Controller;
 use App\LstResult;
-use Mockery\Exception;
 
 class LstController extends Controller
 {
@@ -59,7 +58,7 @@ class LstController extends Controller
                 'results' => $results,
             ]);
         } else {
-            $filename = "$date($group_name).csv";
+            $filename = "$date($group_name)(Listening).csv";
             $content = $this->toCsv($results);
             return response($content)
                 ->header('Content-Type', 'text/csv')

@@ -55,5 +55,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
             Route::get('list_by_date', 'LstController@list_by_date');
             Route::get('detail', 'LstController@detail');
         });
+        Route::group(['prefix' => 'dst'], function () {
+            Route::get('/', 'DstController@index');
+            Route::get('list_by_date', 'DstController@list_by_date');
+            Route::get('detail', 'DstController@detail');
+        });
     });
 });

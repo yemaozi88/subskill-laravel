@@ -24,4 +24,24 @@
             <a href="#">問題管理</a>
         </li>
     </ul>
+
+    <h3 class="">記憶クイズ(Reading)</h3>
+    <ul>
+        <li>
+            <a href="#">成績の閲覧</a>
+        </li>
+        <li>
+            <a href="#">問題管理</a>
+        </li>
+    </ul>
+
+    <h3 class="">数の記憶クイズ</h3>
+    <ul>
+        <li>
+            <a href="{{ url('admin/memory/dst') }}">成績の閲覧</a>
+        </li>
+        <li>
+            <a href="#">問題管理</a>
+        </li>
+    </ul>
 @stop

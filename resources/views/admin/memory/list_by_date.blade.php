@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="page-header">
-        <h1>{{ $title }}--統計</h1>
+        <h1>{{ $title }}({{ $group_name }})--統計</h1>
     </div>
     @if (count($dates) > 0)
     <table class="table table-hover">
