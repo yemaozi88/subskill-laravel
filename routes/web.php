@@ -48,4 +48,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.basic'], function () {
         Route::get('list_by_date', 'EwordController@list_by_date');
         Route::get('detail', 'EwordController@detail');
     });
+
+    Route::group(['prefix' => 'memory', 'namespace' => 'Admin'], function () {
+        Route::group(['prefix' => 'lst'], function () {
+            Route::get('/', 'LstController@index');
+            Route::get('list_by_date', 'LstController@list_by_date');
+            Route::get('detail', 'LstController@detail');
+        });
+    });
 });

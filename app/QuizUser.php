@@ -15,4 +15,8 @@ class QuizUser extends Model
     public function eword_sessions() {
         return $this->hasMany('App\EwordSession', 'user_id');
     }
+
+    public function lst_results() {
+        return $this->hasMany('App\LstResult', 'user_id');
+    }
 }
