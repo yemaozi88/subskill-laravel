@@ -61,7 +61,7 @@
                             @endforeach
                         <th class="text-success">最終得点</th>
                         @endforeach
-                    <th class="text-info">総合点の平均値</th>
+                    <th class="text-info">最終得点の平均値</th>
                     @endforeach
                     <th class="text-info">平均最大値</th>
                 </tr>

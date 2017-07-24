@@ -59,7 +59,12 @@ class LstController extends Controller
                 'results' => $results,
             ]);
         } else {
-            throw new Exception("Not implemented.");
+            $filename = "$date($group_name).csv";
+            $content = $this->toCsv($results);
+            return response($content)
+                ->header('Content-Type', 'text/csv')
+                ->header('charset', 'utf-8')
+                ->header('Content-Disposition', "attachment; filename=$filename");
         }
     }
 
@@ -160,6 +165,28 @@ class LstController extends Controller
             $user["max_score"] = array_reduce($user["answers"],
                 function($c, $x) { return max($c, $x["avg_score"]); }, 0);
             array_push($ret, $user);
+        }
+        return $ret;
+    }
+
+    public function toCsv($results) {
+        $ret = '';
+        foreach ($results as $user) {
+            $ret .= $user["username"].",,";
+            foreach ($user["answers"] as $answer) {
+                foreach ($answer["num_sets"] as $num_set) {
+                    foreach ($num_set["questions"] as $question) {
+                        $ret .= $question["c_score"].",";
+                        $ret .= $question["input_word"].",";
+                        $ret .= $question["right_word"].",";
+                        $ret .= $question["w_score"].",";
+                        $ret .= $question["score"].",";
+                    }
+                    $ret .= $num_set["sum_score"].",";
+                }
+                $ret .= $answer["avg_score"].",";
+            }
+            $ret .= $user["max_score"]."\n";
         }
         return $ret;
     }
