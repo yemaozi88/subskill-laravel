@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="page-header">
-        <h1>{{ $date }}の統計(Listening)({{ $group_title }})</h1>
+        <h1>{{ $date }}の統計(Reading)({{ $group_title }})</h1>
         <a class="btn btn-default" href="{{
-                        URL::action('Admin\LstController@detail', [
+                        URL::action('Admin\RstController@detail', [
                             'group_name' => $group_name,
                             'date' => $date,
                             'format' => 'csv',

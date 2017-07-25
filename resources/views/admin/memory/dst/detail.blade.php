@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="page-header">
-        <h1>{{ $date }}の統計({{ $group_title }})</h1>
+        <h1>{{ $date }}の統計(Digit)({{ $group_title }})</h1>
         <a class="btn btn-default" href="{{
                         URL::action('Admin\DstController@detail', [
                             'group_name' => $group_name,

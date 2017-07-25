@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Helper;
 use App\Http\Controllers\Controller;
-use App\LstResult;
+use App\RstResult;
 
-class LstController extends Controller
+class RstController extends Controller
 {
     //
     public function index() {
         $college_info = Helper::get_college_info();
-        $submit_url = action('Admin\LstController@list_by_date');
+        $submit_url = action('Admin\RstController@list_by_date');
         return view('admin/memory/index', [
             'college_info' => $college_info,
             'submit_url' => $submit_url
@@ -21,9 +21,9 @@ class LstController extends Controller
 
     public function list_by_date(Request $request) {
         $group_name = $request->input('group_name');
-        $title = "記憶クイズ(Listening)";
-        $action_name = 'Admin\LstController@detail';
-        $dates = LstResult::by_date('test', $group_name);
+        $title = "記憶クイズ(Reading)";
+        $action_name = 'Admin\RstController@detail';
+        $dates = RstResult::by_date('test', $group_name);
         return view('admin/memory/list_by_date', [
             'group_name' => $group_name,
             'action_name' => $action_name,
@@ -39,7 +39,7 @@ class LstController extends Controller
         if ($format == "") {
             $format = "html";
         }
-        $query_results = LstResult::select('user_id', 'last_word_list', 'judgement_list', 'correct_num', 'question_num')
+        $query_results = RstResult::select('user_id', 'last_word_list', 'judgement_list', 'correct_num', 'question_num')
             ->whereRaw('DATE(created_at) = ?', [$date])
             ->whereIn('user_id', function ($query) use ($group_name) {
                 $query->select('id')
@@ -48,17 +48,17 @@ class LstController extends Controller
             })->with(['user' => function($query) {
                 $query->select('id', 'username');
             }])->get();
-        $quiz_file = json_decode(file_get_contents(public_path('upload/lst/test/manifest.json')));
+        $quiz_file = json_decode(file_get_contents(public_path('upload/rst/test/manifest.json')));
         $results = Helper::processResult($quiz_file->questionSets, $query_results);
         if ($format == "html") {
-            return view('admin/memory/lst/detail', [
+            return view('admin/memory/rst/detail', [
                 'date' => $date,
                 'group_name' => $group_name,
                 'group_title' => $group_name,
                 'results' => $results,
             ]);
         } else {
-            $filename = "$date($group_name)(Listening).csv";
+            $filename = "$date($group_name)(Reading).csv";
             $content = Helper::toCsv($results);
             return response($content)
                 ->header('Content-Type', 'text/csv')
