@@ -1,5 +1,5 @@
 <div class="container">
     <p>
-        If you have any questions, please contact sonicmisora#126.com(replace # with {{ '@' }}).
+        ご意見・ご質問は、428968＠gmail.com (＠は半角のものに置き換えてください）までお願いいたします。
     </p>
 </div>

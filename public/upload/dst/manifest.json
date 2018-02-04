@@ -31,7 +31,15 @@
             {"num": 5, "order": "F"},
             {"num": 5, "order": "B"},
             {"num": 6, "order": "F"},
-            {"num": 6, "order": "B"}
+            {"num": 6, "order": "B"},
+            {"num": 7, "order": "F"},
+            {"num": 7, "order": "B"},
+            {"num": 8, "order": "F"},
+            {"num": 8, "order": "B"},
+            {"num": 9, "order": "F"},
+            {"num": 9, "order": "B"},
+            {"num": 10, "order": "F"},
+            {"num": 10, "order": "B"}
         ]
     }
 }

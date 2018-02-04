@@ -31,6 +31,7 @@ class DstController extends Controller
         $raw_data = $this->parse_manifest(public_path('upload/dst/manifest.json'));
         $manifest_url = url('upload/dst/manifest.json');
         $send_answer_url = url('api/dst/create');
+		$request->session()->forget('q_num');
         $q_num = count($raw_data["questionSets"][$quiz_set_name]);
 
         return view("dst/quiz", [
